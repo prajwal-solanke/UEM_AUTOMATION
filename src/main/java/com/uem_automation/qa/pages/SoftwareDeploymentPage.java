@@ -49,8 +49,11 @@ public class SoftwareDeploymentPage {
     @FindBy(xpath = "//input[@id='XPSoftwareUpgrade_btnUpload']")
     private WebElement fileUploadButton;
 
-    @FindBy(xpath = "//div[@id='trSummaryButton']")
+    @FindBy(xpath = "//label[@id='WinFileTransferlblMessage']")
     private WebElement fileUploadStatus;
+
+    @FindBy(xpath = "//label[@id='XPSoftwareUpgrade_lblErrorMsg']")
+    private WebElement fileUploadStatus2;
 
     @FindBy(xpath = "//select[@id='XPSoftwareUpgrade_ddlFile']")
     private WebElement fileDropdown;
@@ -76,8 +79,103 @@ public class SoftwareDeploymentPage {
     @FindBy(xpath = "//input[@id='XPSoftwareUpgrade_InstallidRebootRequired']")
     private WebElement softwareUpgradeSkipWriteFilterCheckbox;
 
-    //    @FindBy(xpath = "xxxxxx")
-    //    private WebElement xxxxxx ;
+    // file transfer
+    @FindBy(xpath = "//ul[@class='menu-nav mt-n1 page-sidebar-menu']//li[@id='lblMenu_software_deployment_Win']//label[@title='File Transfer'][normalize-space()='File Transfer']")
+    private WebElement windowsSoftwareDeploymentFileTransferRhsMenu ;
+
+    @FindBy(xpath = "//label[@id='WinFileTransferlnkbtnfile']")
+    private WebElement fileTansferLabel ;
+
+    @FindBy(xpath = "//input[@id='WinFileTransfertxtTargetFolderPath']")
+    private WebElement targetFolderPathTextbox ;
+
+    @FindBy(xpath = "//select[@id='winFileTransferSourcedrp']")
+    private WebElement ftSourceDropdown ;
+
+    @FindBy(xpath = "//select[@id='winFileTransferSourceTypedrp']")
+    private WebElement ftSourceTypeDropdown ;
+
+    @FindBy(xpath = "//input[@id='WinFileTransferfileUpload']")
+    private WebElement ftFileUploadIcon ;
+
+    @FindBy(xpath = "//input[@id='WinFileTransferbtnUploads']")
+    private WebElement ftFileUploadButton ;
+
+    @FindBy(xpath = "//select[@id='winFileTransferNamedrp']")
+    private WebElement ftFileNameDropdown ;
+
+    @FindBy(xpath = "//input[@id='WinFileTransferchkFileExecute']")
+    private WebElement executeFileCheckbox ;
+
+    @FindBy(xpath = "//input[@id='WinFileTransfertxtCommandLine']")
+    private WebElement commandParameterTextbox ;
+
+    @FindBy(xpath = "//input[@id='WinFileTransferidRebootRequired']")
+    private WebElement ftSkipWriteFilterCheckbox ;
+
+    @FindBy(xpath = "//input[@id='WinFileTransferchkGlobalRepository']")
+    private WebElement ftGlobalRepositoryCheckbox ;
+
+    @FindBy(xpath = "//label[@id='WinFileTransferlnkbtnfolder']")
+    private WebElement ftFolderTransferLabel ;
+
+    @FindBy(xpath = "//input[@id='WinFileTransferchkBatchExecution']")
+    private WebElement ftBatchExecutionCheckbox ;
+
+    @FindBy(xpath = "//input[@id='WinFileTransferbtnFTApplyJQ']")
+    private WebElement fileTransferButtonSave ;
+
+    @FindBy(xpath = "//label[@id='WinFileTransferlblMessage']")
+    private WebElement fileTransferStatusMessage ;
+
+    @FindBy(xpath = "//div[@id='WinFileTransfertblFileTransferView']//div[@class='pull-left']")
+    private WebElement ftFileUploadStatus ;
+
+    // Import File
+    @FindBy(xpath = "//ul[@class='menu-nav mt-n1 page-sidebar-menu']//li[@id='lblMenu_software_deployment_Win']//label[@title='Import File'][normalize-space()='Import File']")
+    private WebElement windowsSoftwareDeploymentImportFileRhsMenu ;
+
+    @FindBy(xpath = "//label[@id='WindowsImportFile_lilblImportFile']")
+    private WebElement ifImportFileLabel ;
+
+    @FindBy(xpath = "//select[@id='WindowsImportFileddlSourceType']")
+    private WebElement ifSourceTypeDropdown ;
+
+    @FindBy(xpath = "//select[@id='WindowsImportFileddlSource']")
+    private WebElement ifSourceDropdown ;
+
+    @FindBy(xpath = "//input[@id='WindowsImportFilePathTxt']")
+    private WebElement ifFilePathTextbox ;
+
+    @FindBy(xpath = "//label[@id='WindowsImportFile_lilblImportFolder']")
+    private WebElement ifImportFolderLabel ;
+
+    @FindBy(xpath = "//input[@id='txtWindowsImportFolderPath']")
+    private WebElement ifFolderPathTextbox ;
+
+    @FindBy(xpath = "//label[@id='WindowsImportFile_lilblFolderSync']")
+    private WebElement ifFolderSynchronizationLabel ;
+
+    @FindBy(xpath = "//input[@id='WindowsImportFile_txtFolderSyncPath']")
+    private WebElement ifFolderSynchronizationPathTextbox ;
+
+    @FindBy(xpath = "//input[@id='WindowsImportFile_ADDFolderSyncPath']")
+    private WebElement addButton ;
+
+    @FindBy(xpath = "//input[@id='btnApplyWindowsImportFile']")
+    private WebElement importFileButtonSave ;
+
+    @FindBy(xpath = "//input[@id='WindowsImportFile_btnFolderSyncApply']")
+    private WebElement folderSyncButtonSave ;
+
+    @FindBy(xpath = "//label[@id='WindowsImportFile_lblMsg']")
+    private WebElement importFileStatusMessage ;
+
+    @FindBy(xpath = "//label[@id='WindowsImportFilelblMessage']")
+    private WebElement folderSyncStatusMessage ;
+
+//    @FindBy(xpath = "xxxxxxxx")
+//    private WebElement xxxxx ;
 
 
     // Constructor
@@ -139,7 +237,8 @@ public class SoftwareDeploymentPage {
                 fileUploadIcon.sendKeys(System.getProperty("user.dir") + ("\\src\\main\\java\\com\\uem_automation\\qa\\testdata\\") + fileName);
                 fileUploadButton.click();
                 wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
-                Assert.assertTrue((fileUploadStatus.getText()).equalsIgnoreCase(fileName + " is uploaded"));
+//                Assert.assertTrue((fileUploadStatus.getText()).equalsIgnoreCase(fileName + " is uploaded"));
+                Assert.assertEquals(fileUploadStatus2.getText(), fileName + " is uploaded");
 
             } else if (sourceType.equalsIgnoreCase("$Group$")) {
                 select = new Select(fileDropdown);
@@ -165,7 +264,8 @@ public class SoftwareDeploymentPage {
                 wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
 
                 validateConnectionButton.click();
-                Assert.assertTrue((connectionStatus.getText()).equalsIgnoreCase("Connection validated successfully."));
+//                Assert.assertTrue((connectionStatus.getText()).equalsIgnoreCase("Connection validated successfully."));
+                Assert.assertEquals(connectionStatus.getText(), "Connection validated successfully.");
 
             }
 
@@ -198,4 +298,287 @@ public class SoftwareDeploymentPage {
 
     }
 
+    public void apply_FileTransfer(
+            String selectTab, String targetFolderPath, String ftSource,
+            String ftSourceType, String fileName, String skipWriteFilter, String globalRepository,
+            String executeFile, String batchExecution, String commandParameter
+    ) {
+
+        if (rhsMenuToogleElement.getAttribute("class").contains("active")) {
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.elementToBeClickable(rhsMenuToogleElement));
+            rhsMenuToogleElement.click();
+        }
+
+        if (!(windowsSoftwareDeploymentRhsMenu.getAttribute("class").contains("menu-item-open"))) {
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.elementToBeClickable(windowsSoftwareDeploymentRhsMenu));
+            windowsSoftwareDeploymentRhsMenu.click();
+        }
+
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        windowsSoftwareDeploymentFileTransferRhsMenu.click();
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+        Select select;
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+//        String selectTab = "File Transfer"; //testdata
+
+        if (selectTab.equalsIgnoreCase("File Transfer")) {
+
+            fileTansferLabel.click();
+            targetFolderPathTextbox.sendKeys(targetFolderPath); //testdata
+
+            //source
+            select = new Select(ftSourceDropdown);
+            select.selectByVisibleText(ftSource); //testdata
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+            if (ftSource.equalsIgnoreCase("Upload")) {
+
+                //source type
+                select = new Select(ftSourceTypeDropdown);
+                select.selectByVisibleText(ftSourceType); //testdata
+                wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+                // file name
+                ftFileUploadIcon.sendKeys(System.getProperty("user.dir") + ("\\src\\main\\java\\com\\uem_automation\\qa\\testdata\\") + fileName); //testdata
+                ftFileUploadButton.click();
+                wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+                Assert.assertTrue((ftFileUploadStatus.getText()).equalsIgnoreCase(fileName + " is uploaded"));
+
+
+            } else if (ftSource.equalsIgnoreCase("Repository")) {
+
+                //source type
+                select = new Select(ftSourceTypeDropdown);
+                select.selectByVisibleText(ftSourceType); //testdata
+                wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+                //file name
+                select = new Select(ftFileNameDropdown);
+                select.selectByVisibleText(fileName); // testdata=
+
+            } else if (ftSource.equalsIgnoreCase("$GROUP$")) {
+
+                //file name
+                select = new Select (ftFileNameDropdown);
+                select.selectByVisibleText(fileName); // testdata
+
+            }
+
+            //execute file
+            if (executeFile.equalsIgnoreCase("Y")) { //testdata
+                js.executeScript("arguments[0].click();", executeFileCheckbox);
+
+                commandParameterTextbox.sendKeys(commandParameter); //testdata
+            }
+
+            // skip and global
+            if (skipWriteFilter.equalsIgnoreCase("Y")) { //testdata
+                js.executeScript("arguments[0].click();", ftSkipWriteFilterCheckbox);//input[@id='XPSoftwareUpgrade_InstallidRebootRequired']
+            }
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+            if (globalRepository.equalsIgnoreCase("Y")) { //testdata
+                js.executeScript("arguments[0].click();", ftGlobalRepositoryCheckbox);
+            }
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+        } else if (selectTab.equalsIgnoreCase("Folder Transfer")) {
+
+            ftFolderTransferLabel.click();
+            targetFolderPathTextbox.sendKeys(targetFolderPath); //testdata
+
+            //source
+            wait.until(ExpectedConditions.elementToBeClickable(ftSourceDropdown));
+            select = new Select(ftSourceDropdown);
+            select.selectByVisibleText(ftSource); //testdata
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+            if (ftSource.equalsIgnoreCase("Upload")) {
+
+                //source type
+                select = new Select(ftSourceTypeDropdown);
+                select.selectByVisibleText(ftSourceType); //testdata
+                wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+                // folder name
+                ftFileUploadIcon.sendKeys(System.getProperty("user.dir") + ("\\src\\main\\java\\com\\uem_automation\\qa\\testdata\\") + fileName); //testdata
+                ftFileUploadButton.click();
+                wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+                Assert.assertTrue((fileUploadStatus.getText()).equalsIgnoreCase(fileName + " is uploaded"));
+
+            } else if (ftSource.equalsIgnoreCase("Repository")) {
+
+                //source type
+                select = new Select(ftSourceTypeDropdown);
+                select.selectByVisibleText(ftSourceType); //testdata
+                wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+                //file name
+                select = new Select (ftFileNameDropdown);
+                select.selectByVisibleText(fileName); // testdata
+
+
+            } else if (ftSource.equalsIgnoreCase("$GROUP$")) {
+
+                //file name
+                select = new Select (ftFileNameDropdown);
+                select.selectByVisibleText(fileName); // testdata
+
+            }
+
+            // batch exe and skip and global
+            if (batchExecution.equalsIgnoreCase("Y")) { //testdata
+                js.executeScript("arguments[0].click();", ftBatchExecutionCheckbox);
+            }
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+            if (skipWriteFilter.equalsIgnoreCase("Y")) { //testdata
+                js.executeScript("arguments[0].click();", ftSkipWriteFilterCheckbox);//input[@id='XPSoftwareUpgrade_InstallidRebootRequired']
+            }
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+            if (globalRepository.equalsIgnoreCase("Y")) { //testdata
+                js.executeScript("arguments[0].click();", ftGlobalRepositoryCheckbox);
+            }
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        }
+
+        fileTransferButtonSave.click();
+
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        if (!((fileTransferStatusMessage.getText()).equals("Request for settings update has been processed"))) {
+            Assert.fail(fileTransferStatusMessage.getText());
+        }
+
+    }
+
+    public void apply_ImportFile(
+            String ifSelectTab, String sourceType, String source, String filePath, String folderPath,
+            String folderSynchronizationPath
+    ) {
+
+        if (rhsMenuToogleElement.getAttribute("class").contains("active")) {
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.elementToBeClickable(rhsMenuToogleElement));
+            rhsMenuToogleElement.click();
+        }
+
+        if (!(windowsSoftwareDeploymentRhsMenu.getAttribute("class").contains("menu-item-open"))) {
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.elementToBeClickable(windowsSoftwareDeploymentRhsMenu));
+            windowsSoftwareDeploymentRhsMenu.click();
+        }
+
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        windowsSoftwareDeploymentImportFileRhsMenu.click();
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+        Select select;
+
+//        String ifSelectTab = "Import File"; //testdata
+
+        if(ifSelectTab.equalsIgnoreCase("Import File")) {
+
+            ifImportFileLabel.click();
+
+            select = new Select(ifSourceTypeDropdown);
+            select.selectByVisibleText(sourceType); //testdata
+
+            if(!sourceType.equalsIgnoreCase("$GROUP$")) {
+                select = new Select(ifSourceDropdown);
+                select.selectByVisibleText(source); //testdata
+            }
+
+            ifFilePathTextbox.sendKeys(filePath); //testdata
+
+            importFileButtonSave.click();
+
+        }
+        else if(ifSelectTab.equalsIgnoreCase("Import Folder")) {
+
+            ifImportFolderLabel.click();
+
+            select = new Select(ifSourceTypeDropdown);
+            select.selectByVisibleText(sourceType);
+
+            if(!sourceType.equalsIgnoreCase("$GROUP$")) {
+                select = new Select(ifSourceDropdown);
+                select.selectByVisibleText(source); //testdata
+            }
+
+            ifFolderPathTextbox.sendKeys(folderPath); //testdata
+
+            importFileButtonSave.click();
+
+        }
+        else if(ifSelectTab.equalsIgnoreCase("Folder synchronization")) {
+
+            ifFolderSynchronizationLabel.click();
+
+            ifFolderSynchronizationPathTextbox.sendKeys(folderSynchronizationPath); //testdata
+
+            addButton.click();
+
+            folderSyncButtonSave.click();
+        }
+
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+//        if(ifSelectTab.equalsIgnoreCase("Folder synchronization")) {
+//            if (!((folderSyncStatusMessage.getText()).equals("Request for settings update has been processed"))) {
+//                Assert.fail(folderSyncStatusMessage.getText());
+//            }
+//        }
+//        else {
+//            if (!((importFileStatusMessage.getText()).equals("Request for settings update has been processed"))) {
+//                Assert.fail(importFileStatusMessage.getText());
+//            }
+//        }
+
+        String actualMessage = (ifSelectTab.equalsIgnoreCase("Folder synchronization"))
+                ? folderSyncStatusMessage.getText()
+                : importFileStatusMessage.getText();
+
+        Assert.assertEquals(actualMessage, "Request for settings update has been processed");
+    }
+
+//    public void apply_DeployImage(String ifSelectTab, String sourceType, String source, String filePath, String folderPath, String folderSynchronizationPath) {
+//
+//        if (rhsMenuToogleElement.getAttribute("class").contains("active")) {
+//            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+//            wait.until(ExpectedConditions.elementToBeClickable(rhsMenuToogleElement));
+//            rhsMenuToogleElement.click();
+//        }
+//
+//        if (!(windowsSoftwareDeploymentRhsMenu.getAttribute("class").contains("menu-item-open"))) {
+//            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+//            wait.until(ExpectedConditions.elementToBeClickable(windowsSoftwareDeploymentRhsMenu));
+//            windowsSoftwareDeploymentRhsMenu.click();
+//        }
+//
+//        if (!(windowsImageManagementRhsMenu.getAttribute("class").contains("menu-item-open"))) {
+//            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+//            wait.until(ExpectedConditions.elementToBeClickable(windowsImageManagementRhsMenu));
+//            windowsImageManagementRhsMenu.click();
+//        }
+//
+//        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+//        windowsSoftwareDeploymentImageManagementDeployImageRhsMenu.click();
+//        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+//
+//        Select select;
+//
+//        select = new Select(targetConnectionDropdown);
+//        select.selectByVisibleText(targetConnection); //testdata
+//
+//        select = new Select(diSourceDropdown);
+//        select.selectByVisibleText(source); //testdata
+//
+//        // pending onwards...
+//
+//    }
 }

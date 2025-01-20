@@ -404,7 +404,7 @@ public class UserSettingsPage {
 
             autoLogonTab.click();
 
-            String ui_username = "shradha"; //Admin //Guest //shradha // etc. chk the application
+            String ui_username = "Guest"; //Admin //Guest //shradha // etc. chk the application
 
             Select select = new Select(uiUsernameDropdown);
             select.selectByVisibleText(ui_username);

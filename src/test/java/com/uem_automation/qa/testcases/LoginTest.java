@@ -41,7 +41,7 @@ public class LoginTest extends Base {
 
 	@DataProvider
 	public Object[][] supplyTestData() {
-		Object[][] data = { { "pankaj.wairagade@vdi.com", "pass_123", "Default View - Device Manager" } };// , { "admin", "admin123", "Default View - Device Manager" }, { "admin1", "admin123", "Task Manager" } };
+		Object[][] data = { {"admin" , "admin" , "Default View - Device Manager"} };
 //		Object[][] data = Utilities.getTestDataFromExcel("Login");
 		return data;
 	}
@@ -66,6 +66,8 @@ public class LoginTest extends Base {
 		loginPage.enterPassword(password);
 		loginPage.selectView(view);
 		loginPage.clickOnLoginButton();
+		deviceManagerPage.changeRightMenuPosition();
+		deviceManagerPage.changeLeftMenuPosition();
 		Assert.assertTrue(deviceManagerPage.isLogoDisplayed(testdataProp.getProperty("companyWebsiteUrl")),
 				"[Error: Logo is not displayed]");
 	}
@@ -141,6 +143,8 @@ public class LoginTest extends Base {
 		action.sendKeys(configProp.getProperty("validPass")).perform();
 		action.sendKeys(Keys.ENTER).build().perform();
 		loginPage.selectView(configProp.getProperty("selectView"));
+		deviceManagerPage.changeLeftMenuPosition();
+		deviceManagerPage.changeRightMenuPosition();
 		Assert.assertTrue(deviceManagerPage.isLogoDisplayed(testdataProp.getProperty("companyWebsiteUrl")),
 				"[Error: Logo is not displayed]");
 	}
@@ -157,6 +161,8 @@ public class LoginTest extends Base {
 		loginPage.enterPassword(configProp.getProperty("validPass"));
 		loginPage.selectView(configProp.getProperty("selectView"));
 		loginPage.clickOnLoginButton();
+		deviceManagerPage.changeLeftMenuPosition();
+		deviceManagerPage.changeRightMenuPosition();
 		deviceManagerPage.isLogoDisplayed(testdataProp.getProperty("companyWebsiteUrl"));
 		driver.navigate().back();
 		Thread.sleep(2000);
@@ -173,7 +179,8 @@ public class LoginTest extends Base {
 		loginPage.enterPassword(configProp.getProperty("validPass"));
 		loginPage.selectView(configProp.getProperty("selectView"));
 		loginPage.clickOnLoginButton();
-		deviceManagerPage.changeTheLeftMenuPositionToTopDirection();
+		deviceManagerPage.changeLeftMenuPosition();
+		deviceManagerPage.changeRightMenuPosition();
 		Assert.assertTrue(deviceManagerPage.isLogoDisplayed(testdataProp.getProperty("companyWebsiteUrl")),
 				"[Error: Logo is not displayed]");
 		// logout

@@ -320,10 +320,10 @@ public class AdministrationSettingsPage {
     @FindBy(xpath = "//select[@id='WinAdvSettddlLocationinMeters']")
     private WebElement locationRangeDropdown;
 
-    @FindBy(xpath = "//div[@class='col-lg-8 row']//div[@class='line-height-sm ml-2']//a[@class='icon-21--Asc']")
+    @FindBy(xpath = "//div[@class='col-12 col-sm-12 col-md-8 col-lg-8 row']//div[@class='line-height-sm ml-2']//a[@class='icon-21--Asc']") //div[@class='col-lg-8 row']//div[@class='line-height-sm ml-2']//a[@class='icon-21--Asc']")
     private WebElement decreaseMinutes;
 
-    @FindBy(xpath = "//div[@class='col-lg-8 row']//div[@class='line-height-sm ml-2']//a[@class='icon-65--Desc']")
+    @FindBy(xpath = "//div[@class='col-12 col-sm-12 col-md-8 col-lg-8 row']//div[@class='line-height-sm ml-2']//a[@class='icon-65--Desc']") //div[@class='col-lg-8 row']//div[@class='line-height-sm ml-2']//a[@class='icon-65--Desc']")
     private WebElement increaseMinutes;
 
     @FindBy(xpath = "//input[@id='WinAdvSetttxt_HeartBeatInterval']")
@@ -1080,7 +1080,7 @@ public class AdministrationSettingsPage {
 
         // hardware log interval
         int hardwareLogsIntervalInt = Integer.parseInt(hardwareLogsInterval);
-        int count = hardwareLogsIntervalInt - 3; // by default it's 3
+        int count = hardwareLogsIntervalInt - 5; // by default it's 3
 
         if (count < 0) {
             for (int i = 0; i < -count; i++) {

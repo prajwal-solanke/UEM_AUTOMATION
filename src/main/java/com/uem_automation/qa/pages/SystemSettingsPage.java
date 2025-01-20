@@ -345,7 +345,7 @@ public class SystemSettingsPage {
     @FindBy(xpath = "//select[@id='WindowsKeyboardSettings_ddlKeyboardLocales']")
     private WebElement keyboardLocalesDropdown;
 
-    @FindBy(xpath = "//div[@id='WindowsKeyboardSettings_pnlkeyboardSetup']//div[@class='col-lg-4 checkbox-inline']//span")
+    @FindBy(xpath = "//label[@id='WindowsKeyboardSettings_lblRemoveExist']/preceding-sibling::span")//div[@id='WindowsKeyboardSettings_pnlkeyboardSetup']//div[@class='col-lg-4 checkbox-inline']//span")
     private WebElement replaceAllExistingKeyboardCheckbox;
 
     @FindBy(xpath = "//input[@id='WindowsKeyboardSettings_btnApply']")
@@ -633,6 +633,7 @@ public class SystemSettingsPage {
         // Save the 802.x security settings
         security802xButtonSave.click();
         wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        wait.until(ExpectedConditions.visibilityOf(windows802taskUpdateStatusMessage));
 
         // Verify if the settings were saved successfully
         String statusMessage = windows802taskUpdateStatusMessage.getText();
@@ -1026,6 +1027,7 @@ public class SystemSettingsPage {
 //        windowsSystemSettingsPeripheralSettingsDropdown.click();
 
         wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        wait.until(ExpectedConditions.elementToBeClickable(windowsSystemSettingsPeripheralSettings_DisplaySettings_Menu));
         windowsSystemSettingsPeripheralSettings_DisplaySettings_Menu.click();
 
         wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
@@ -1266,7 +1268,7 @@ public class SystemSettingsPage {
 //        windowsSystemSettingsPrinterSettingsDropdown.click();
         try {
             windowsSystemSettingsPrinterSettings_addPrinter_Menu.click();
-        } catch(ElementNotInteractableException e) {
+        } catch(NoSuchElementException e) {
             Assert.fail("Printer Menu subitems not visible, 'add printer' menu is not visible.");
         } catch(Exception e) {
             System.out.println("Error: " + e.getMessage());

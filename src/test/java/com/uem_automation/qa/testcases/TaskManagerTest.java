@@ -2,6 +2,7 @@ package com.uem_automation.qa.testcases;
 
 import com.uem_automation.qa.pages.*;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.*;
 
 import com.uem_automation.qa.base.Base;
@@ -20,6 +21,8 @@ public class TaskManagerTest extends Base {
     SystemSettingsPage systemSettingsPage;
     AdministrationSettingsPage administrationSettingsPage;
     SecuritySettingsPage securitySettingsPage;
+    ConnectionManagementPage connectionManagementPage;
+    RemoteOperationalToolPage remoteOperationalToolPage;
     SoftwareDeploymentPage softwareDeploymentPage;
 
     // Constructor
@@ -40,13 +43,16 @@ public class TaskManagerTest extends Base {
         userSettingsPage = new UserSettingsPage(driver);
         administrationSettingsPage = new AdministrationSettingsPage(driver);
         securitySettingsPage = new SecuritySettingsPage(driver);
+        connectionManagementPage = new ConnectionManagementPage(driver);
+        remoteOperationalToolPage = new RemoteOperationalToolPage(driver);
         softwareDeploymentPage = new SoftwareDeploymentPage(driver);
 
         loginPage.enterUsername(configProp.getProperty("validEmail"));
         loginPage.enterPassword(configProp.getProperty("validPass"));
         loginPage.selectView("Task Manager"); //select the direct view //Default View - Device Manager //Task Manager
         loginPage.clickOnLoginButton();
-        deviceManagerPage.changeTheLeftMenuPositionToTopDirection();
+        deviceManagerPage.changeLeftMenuPosition();
+        deviceManagerPage.changeRightMenuPosition();
 //        deviceManagerPage.clickOnTaskManagementTopMenu();
 //        deviceManagerPage.waitTillFooterCompanyWebsiteURLIsDisplayed(testdataProp.getProperty("companyWebsiteUrl"));
 
@@ -74,7 +80,7 @@ public class TaskManagerTest extends Base {
 
     // Test Cases
 
-    @Test(priority = 1, dataProvider = "supplyTestData")//supplyTestData_template") //supplyTestData_template")
+    @Test(priority = 1, dataProvider = "supplyTestData")
     public void TC_TM_001_Create_Template(String templateName, String osType, String skipWriteFilter,
                                           String taskScheduleType, String allowTaskPostponement, String postponementMessage, String postponementDisplayTime, String templateStartMessage, String displayTime) {
 
@@ -144,7 +150,7 @@ public class TaskManagerTest extends Base {
 
             // Ethernet Setup
             String ethernetSetupType, String obtainDnsAutomatically, String primaryDnsInput,
-            String secondaryDnsInput) throws InterruptedException {
+            String secondaryDnsInput) {
 
 //        taskManagerPage.navigateToTemplateMangerRhsMenu();
 //        templateManagerPage.searchAndViewTheTemplate(templateName);
@@ -641,10 +647,578 @@ public class TaskManagerTest extends Base {
         );
     }
 
-    // Software Deployment
-    // Software and Patch Install/Uninstall
+    @Test(priority = 28, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_028_apply_security_network_Firewall(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // firewall
+            String selectTab, String name, String portNumber, String selectProtocol,
+            String programName, String programPath) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // Network
+        // Firewall
+        securitySettingsPage.applySecuritySettings_Network_Firewall( selectTab,  name,  portNumber,  selectProtocol,
+                 programName,  programPath);
+    }
+
+    @Test(priority = 29, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_029_apply_security_network_ProxySettings(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // ProxySettings
+            String automaticallyDetectSettings, String useAutomaticConfigScript, String address) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // Network
+        // Proxy Settings
+        securitySettingsPage.applySecuritySettings_Network_ProxySettings( automaticallyDetectSettings,  useAutomaticConfigScript,  address);
+    }
+
     @Test(priority = 30, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
-    public void TC_TM_030_software_deployment_SoftwarePatchInstallUninstall(
+    public void TC_TM_030_apply_security_network_SoftwareRestriction(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // SoftwareRestriction
+            String selectTab, String installationAndUninstallationRestriction, String softwareRestriction,
+            String softwareApplicationName, String browserName, String restrictionType) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // Network
+        // Proxy Settings
+        securitySettingsPage.applySecuritySettings_SoftwareRestriction( selectTab,  installationAndUninstallationRestriction,  softwareRestriction,
+                 softwareApplicationName,  browserName,  restrictionType);
+    }
+
+    @Test(priority = 31, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_031_apply_security_system_DataWipe(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // Data Wipe
+            String fileFolder) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // System
+        // Data Wipe
+//        securitySettingsPage.applySecuritySettings_System_DataWipe( fileFolder);
+        Assert.fail("Data Wipe Testcase Is Disabled");
+    }
+
+    @Test(priority = 32, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_032_apply_security_system_DeployCertificate(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // Deploy Certificate
+            String source, String connectionName, String certificateType,
+            String fileName, String storeName, String password, String file) throws InterruptedException {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // System
+        // Deploy Certificate
+        securitySettingsPage.applySecuritySettings_System_DeployCertificate( source,  connectionName,  certificateType,
+                fileName,  storeName,  password,  file);
+    }
+
+    @Test(priority = 33, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_033_apply_security_system_IntegratedPeripheral(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // Integrated Peripheral
+            String enableCdDvd, String bluetoothDevice) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // System
+        // Integrated Peripheral
+//        securitySettingsPage.applySecuritySettings_System_IntegratedPeripheral( enableCdDvd,  bluetoothDevice);
+        Assert.fail("Integrated Peripheral Testcase Is Disabled");
+    }
+
+    @Test(priority = 34, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_034_apply_security_system_PortSettings(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // Port Settings
+            String enableCdDvd, String enableFirewall, String enableParallelPort, String enableSerialPort
+            , String enableUsbPort, String usbMassStorage, String usbWriteProtect) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // System
+        // Port Settings
+        securitySettingsPage.applySecuritySettings_System_PortSettings( enableCdDvd,  enableFirewall,  enableParallelPort,  enableSerialPort
+                ,  enableUsbPort,  usbMassStorage,  usbWriteProtect);
+    }
+
+    @Test(priority = 35, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_035_apply_connectionManagement_Connections_CitrixWorkspace(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // Citrix Workspace App
+            String connectionName, String citrixType, String storeName,
+            String configurationUrl, String descriptionCitrix) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // Connection Management
+        // Connections
+        // Citrix Workspace App
+        connectionManagementPage.applyConnectionManagement_Connections_CitrixWorkspaceApp( connectionName,  citrixType,  storeName,
+                configurationUrl,  descriptionCitrix);
+    }
+
+    @Test(priority = 36, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_036_apply_connectionManagement_Connections_CustomExecutable(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // Custom Executable
+            String connectionName, String path, String createShortcutOnDesktop,
+            String autostartConnection, String arguments) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // Connection Management
+        // Connections
+        // Custom Executable
+        connectionManagementPage.applyConnectionManagement_Connections_CustomExecutable( connectionName,  path,  createShortcutOnDesktop,
+                autostartConnection,  arguments);
+    }
+
+    @Test(priority = 37, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_037_apply_connectionManagement_Connections_Browser(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // Browser
+            String connectionName, String browserType, String configurationUrl,
+            String kioskMode, String createShortcutOnDesktop , String autostartConnection , String autoReconnectConnection) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // Connection Management
+        // Connections
+        // Browser
+        connectionManagementPage.applyConnectionManagement_Connections_Browser( connectionName,  browserType,  configurationUrl,
+                kioskMode,  createShortcutOnDesktop ,  autostartConnection , autoReconnectConnection);
+    }
+
+    @Test(priority = 38, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_038_apply_connectionManagement_Connections_RDP(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // RDP
+            String rdpConnectionName, String selectTab, String iphostName, String port,
+            String alwaysAsk4Credential, String userName, String domain,
+            String password, String automaticLogon, String automaticStart, String useAllMonitorsForRemoteSession, String fullScreen,
+            String sizeOfDesktop, String colors, String displayConnectionBar,
+            String remoteAudioPlayback, String remoteAudioRecording, String drives, String clipboard,
+            String printers, String smartCards, String ports,
+            String pnpDevices, String keyboard, String startProgramOnConnection, String programPathFileName, String startInFollowingFolder,
+            String connectionSpeed, String reconnectIfConnDropped, String authenticationOption,
+            String doNotUseRDGateway
+    ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // Connection Management
+        // Connections
+        // RDP
+        connectionManagementPage.applyConnectionManagement_Connections_RDP(
+                rdpConnectionName,  selectTab,  iphostName,  port,
+                alwaysAsk4Credential,  userName,  domain,
+                password,  automaticLogon,  automaticStart,  useAllMonitorsForRemoteSession,  fullScreen,
+                sizeOfDesktop,  colors,  displayConnectionBar,
+                remoteAudioPlayback,  remoteAudioRecording,  drives,  clipboard,
+                printers,  smartCards,  ports,
+                pnpDevices,  keyboard,  startProgramOnConnection,  programPathFileName,  startInFollowingFolder,
+                connectionSpeed,  reconnectIfConnDropped,  authenticationOption,
+                doNotUseRDGateway
+        );
+    }
+
+    @Test(priority = 39, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_039_apply_connectionManagement_Connections_Teradici(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // Teradici
+            String connectionName, String hostName, String domainName, String Username, String password,
+            String remoteWorkCard, String usbDisable, String teradiciCreateShortcutOnDesktop,
+            String teradiciCreateShortcutOnStartMenu, String teradiciAutostartConnection, String teradiciType) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // Connection Management
+        // Connections
+        // Teradici
+        connectionManagementPage.applyConnectionManagement_Connections_Teradici(
+                connectionName,  hostName,  domainName,  Username,  password,
+                remoteWorkCard,  usbDisable,  teradiciCreateShortcutOnDesktop,
+                teradiciCreateShortcutOnStartMenu,  teradiciAutostartConnection,  teradiciType
+        );
+    }
+
+    @Test(priority = 40, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_040_apply_connectionManagement_Connections_VMWareview(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // vmwareview
+            String vmConnectionName, String vmHostName, String vmLogin, String vmPassword, String vmDomain, String vmType,
+            String appDesktopName, String smartCardPin, String connectUsbOnStartup, String connectUsbOnInsert, String nonInteractive,
+            String reconnectBehaviour, String vmwProtocol, String createShortcutOnDesktop, String autoStartConnection, String display) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // Connection Management
+        // Connections
+        // VMwareview
+        connectionManagementPage.applyConnectionManagement_Connections_VMWareview(
+                vmConnectionName,  vmHostName,  vmLogin,  vmPassword,  vmDomain,  vmType,
+                appDesktopName,  smartCardPin,  connectUsbOnStartup,  connectUsbOnInsert,  nonInteractive,
+                reconnectBehaviour,  vmwProtocol,  createShortcutOnDesktop,  autoStartConnection,  display
+        );
+    }
+
+    @Test(priority = 41, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_041_apply_connectionManagement_VMViewGlobalSettings(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // VMViewGlobalSettings
+            String unAuthenticatedAccess, String hideClientAfterLaunch, String allowH264Decoding, String allowHighColorAccuracy, String configureSSL,
+            String networkCondition) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // Connection Management
+        // VMViewGlobalSettings
+        connectionManagementPage.applyConnectionManagement_VMViewGlobalSettings(
+                unAuthenticatedAccess,  hideClientAfterLaunch,  allowH264Decoding,  allowHighColorAccuracy,  configureSSL,
+                networkCondition
+        );
+    }
+
+    @Test(priority = 42, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_042_apply_remoteOperationTool_DisableClient(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // DisableClient
+            String disableClientSave
+            ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // remoteOperationTool
+        // DisableClient
+        remoteOperationalToolPage.applyRemoteOperationTool_DisableClient(disableClientSave);
+    }
+
+    @Test(priority = 43, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_043_apply_remoteOperationTool_LockComputer(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // Lock Computer
+            String lockComputerSave
+    ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // remoteOperationTool
+        // LockComputer
+        remoteOperationalToolPage.applyRemoteOperationTool_LockComputer(lockComputerSave);
+    }
+
+    @Test(priority = 44, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_044_apply_remoteOperationTool_LogOff(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // Lock Off
+            String logOffSave
+    ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // remoteOperationTool
+        // logOffSave
+        remoteOperationalToolPage.applyRemoteOperationTool_LogOffSave(logOffSave);
+    }
+
+    @Test(priority = 45, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_045_apply_remoteOperationTool_Restart(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // Restart
+            String RestartSave
+    ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // remoteOperationTool
+        // Restart
+        remoteOperationalToolPage.applyRemoteOperationTool_Restart(RestartSave);
+    }
+
+    @Test(priority = 46, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_046_apply_remoteOperationTool_SendMessageToClient(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // SendMessageToClient
+            String smMessageType, String smImportance, String smTitle, String smMessage
+            , String smDisplayTime, String smFeedback
+    ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // remoteOperationTool
+        // SendMessageToClient
+        remoteOperationalToolPage.applyRemoteOperationTool_SendMessageToClient(
+                smMessageType,  smImportance,  smTitle,  smMessage,  smDisplayTime,  smFeedback
+        );
+    }
+
+    @Test(priority = 47, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_047_apply_remoteOperationTool_ServiceMode(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // ServiceMode
+            String serviceMode
+    ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // remoteOperationTool
+        // ServiceMode
+        remoteOperationalToolPage.applyRemoteOperationTool_ServiceMode(serviceMode);
+    }
+
+    @Test(priority = 48, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_048_apply_remoteOperationTool_ShutDown(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // ShutDown
+            String ShutDown
+    ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // remoteOperationTool
+        // ServiceMode
+        remoteOperationalToolPage.applyRemoteOperationTool_ShutDown(ShutDown);
+    }
+
+    @Test(priority = 49, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_049_apply_remoteOperationTool_SynchroniseInventory(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // SynchroniseInventory
+            String inventorySync
+    ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // remoteOperationTool
+        // SynchroniseInventory
+        remoteOperationalToolPage.applyRemoteOperationTool_SynchroniseInventory(inventorySync);
+    }
+
+    @Test(priority = 50, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_050_apply_remoteOperationTool_WakeOnLan(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // WakeOnLan
+            String WakeOnLan
+    ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // Security
+        // remoteOperationTool
+        // WakeOnLan
+        remoteOperationalToolPage.applyRemoteOperationTool_WakeOnLan(WakeOnLan);
+    }
+
+
+    // Software Deployment
+    //File Transfer
+    @Test(priority = 51, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_051_apply_softwareDeployment_FileTransfer(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // FileTransfer
+            String selectTab, String targetFolderPath, String ftSource,
+            String ftSourceType, String fileName, String skipWriteFilter, String globalRepository,
+            String executeFile, String batchExecution, String commandParameter
+    ) {
+
+        taskManagerPage.navigateToTemplateMangerRhsMenu();
+        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // FileTransfer
+        softwareDeploymentPage.apply_FileTransfer(
+                 selectTab,  targetFolderPath,  ftSource,
+                 ftSourceType,  fileName,  skipWriteFilter,  globalRepository,
+                 executeFile,  batchExecution,  commandParameter
+        );
+    }
+
+    @Test(priority = 52, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_052_apply_softwareDeployment_ImportFile(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // ImportFile
+            String ifSelectTab, String sourceType, String source, String filePath, String folderPath,
+            String folderSynchronizationPath
+    ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // ImportFile
+        softwareDeploymentPage.apply_ImportFile(
+                 ifSelectTab,  sourceType,  source,  filePath,  folderPath, folderSynchronizationPath
+        );
+    }
+
+    @Test(priority = 53, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_053_apply_softwareDeployment_ImportFile(
+
+            // searchAndViewTheTemplate
+            String templateName,
+
+            // ImportFile
+            String ifSelectTab, String sourceType, String source, String filePath, String folderPath,
+            String folderSynchronizationPath
+    ) {
+
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
+
+        // ImportFile
+        softwareDeploymentPage.apply_ImportFile(
+                ifSelectTab,  sourceType,  source,  filePath,  folderPath, folderSynchronizationPath
+        );
+    }
+
+//    @Test(priority = 54, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+//    public void TC_TM_054_apply_softwareDeployment_ImageManagement_DeployImage(
+//
+//            // searchAndViewTheTemplate
+//            String templateName,
+//
+//            // DeployImage
+//            String ifSelectTab, String sourceType, String source, String filePath, String folderPath,
+//            String folderSynchronizationPath
+//    ) {
+//
+////        taskManagerPage.navigateToTemplateMangerRhsMenu();
+////        templateManagerPage.searchAndViewTheTemplate(templateName);
+//
+//        // DeployImage
+//        softwareDeploymentPage.apply_DeployImage(
+//                ifSelectTab,  sourceType,  source,  filePath,  folderPath, folderSynchronizationPath
+//        );
+//    }
+
+    // Software and Patch Install/Uninstall
+    @Test(priority = 60, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+    public void TC_TM_060_software_deployment_SoftwarePatchInstallUninstall(
 
             // searchAndViewTheTemplate
             String templateName,
@@ -662,8 +1236,5 @@ public class TaskManagerTest extends Base {
                 selectNewInstallOrUninstall,  sourceType,  source, fileName,  parameter,  skipWriteFilter, globalRepository);
 
     }
-
-
-
 
 }
