@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>tmp</groupId>
-	<artifactId>UEM_AUTOAMATION_V2</artifactId>
+	<artifactId>UEM_AUTOAMATION_TESTNG_FRAMEWORK</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<name>UEM_AUTOMATION_V2</name>
