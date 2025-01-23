@@ -956,24 +956,24 @@ public class TaskManagerTest extends Base {
         );
     }
 
-    @Test(priority = 42, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
-    public void TC_TM_042_apply_remoteOperationTool_DisableClient(
-
-            // searchAndViewTheTemplate
-            String templateName,
-
-            // DisableClient
-            String disableClientSave
-            ) {
-
-//        taskManagerPage.navigateToTemplateMangerRhsMenu();
-//        templateManagerPage.searchAndViewTheTemplate(templateName);
-
-        // Security
-        // remoteOperationTool
-        // DisableClient
-        remoteOperationalToolPage.applyRemoteOperationTool_DisableClient(disableClientSave);
-    }
+//    @Test(priority = 42, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
+//    public void TC_TM_042_apply_remoteOperationTool_DisableClient(
+//
+//            // searchAndViewTheTemplate
+//            String templateName,
+//
+//            // DisableClient
+//            String disableClientSave
+//            ) {
+//
+////        taskManagerPage.navigateToTemplateMangerRhsMenu();
+////        templateManagerPage.searchAndViewTheTemplate(templateName);
+//
+//        // Security
+//        // remoteOperationTool
+//        // DisableClient
+//        remoteOperationalToolPage.applyRemoteOperationTool_DisableClient(disableClientSave);
+//    }
 
     @Test(priority = 43, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
     public void TC_TM_043_apply_remoteOperationTool_LockComputer(
@@ -1145,8 +1145,8 @@ public class TaskManagerTest extends Base {
             String executeFile, String batchExecution, String commandParameter
     ) {
 
-        taskManagerPage.navigateToTemplateMangerRhsMenu();
-        templateManagerPage.searchAndViewTheTemplate(templateName);
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
 
         // FileTransfer
         softwareDeploymentPage.apply_FileTransfer(

@@ -178,12 +178,12 @@ public class RemoteOperationalToolPage {
 
         if (disableClientSave.equalsIgnoreCase("Y")) {
             disableClientSaveButton.click();
-        }
 
-        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
-        wait.until(ExpectedConditions.visibilityOf(disableClientStatusMessage));
-        if (!((disableClientStatusMessage.getText()).equals("Request for settings update has been processed"))) {
-            Assert.fail(disableClientStatusMessage.getText());
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.visibilityOf(disableClientStatusMessage));
+            if (!((disableClientStatusMessage.getText()).equals("Request for settings update has been processed"))) {
+                Assert.fail(disableClientStatusMessage.getText());
+            }
         }
     }
 
@@ -207,12 +207,12 @@ public class RemoteOperationalToolPage {
 
         if (lockComputerSave.equalsIgnoreCase("Y")) {
             lockComputerSaveButton.click();
-        }
 
-        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
-        wait.until(ExpectedConditions.visibilityOf(lockComputerSaveStatusMessage));
-        if (!((lockComputerSaveStatusMessage.getText()).equals("Request for settings update has been processed"))) {
-            Assert.fail(lockComputerSaveStatusMessage.getText());
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.visibilityOf(lockComputerSaveStatusMessage));
+            if (!((lockComputerSaveStatusMessage.getText()).equals("Request for settings update has been processed"))) {
+                Assert.fail(lockComputerSaveStatusMessage.getText());
+            }
         }
     }
 
@@ -236,12 +236,12 @@ public class RemoteOperationalToolPage {
 
         if (logOffSave.equalsIgnoreCase("Y")) {
             logOffSaveButton.click();
-        }
 
-        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
-        wait.until(ExpectedConditions.visibilityOf(logOffSaveStatusMessage));
-        if (!((logOffSaveStatusMessage.getText()).equals("Request for settings update has been processed"))) {
-            Assert.fail(logOffSaveStatusMessage.getText());
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.visibilityOf(logOffSaveStatusMessage));
+            if (!((logOffSaveStatusMessage.getText()).equals("Request for settings update has been processed"))) {
+                Assert.fail(logOffSaveStatusMessage.getText());
+            }
         }
     }
 
@@ -269,12 +269,12 @@ public class RemoteOperationalToolPage {
 
         if (restartSave.equalsIgnoreCase("Y")) {
             RestartSaveButton.click();
-        }
 
-        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
-        wait.until(ExpectedConditions.visibilityOf(RestartSaveStatusMessage));
-        if (!((RestartSaveStatusMessage.getText()).equals("Request for settings update has been processed"))) {
-            Assert.fail(RestartSaveStatusMessage.getText());
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.visibilityOf(RestartSaveStatusMessage));
+            if (!((RestartSaveStatusMessage.getText()).equals("Request for settings update has been processed"))) {
+                Assert.fail(RestartSaveStatusMessage.getText());
+            }
         }
     }
 
@@ -383,13 +383,19 @@ public class RemoteOperationalToolPage {
 
         if (ShutDownSave.equalsIgnoreCase("Y")) {
             ShutDownSaveButton.click();
+
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.visibilityOf(ShutDownSaveStatusMessage));
+            if (!(ShutDownSaveStatusMessage.getText().equals("Shutdown settings saved successfully."))) {
+                Assert.fail(ShutDownSaveStatusMessage.getText());
+            }
         }
 
-        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
-        wait.until(ExpectedConditions.visibilityOf(ShutDownSaveStatusMessage));
-        if (!(ShutDownSaveStatusMessage.getText().equals("Shutdown settings saved successfully."))) {
-            Assert.fail(ShutDownSaveStatusMessage.getText());
-        }
+//        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+//        wait.until(ExpectedConditions.visibilityOf(ShutDownSaveStatusMessage));
+//        if (!(ShutDownSaveStatusMessage.getText().equals("Shutdown settings saved successfully."))) {
+//            Assert.fail(ShutDownSaveStatusMessage.getText());
+//        }
 
     }
 
