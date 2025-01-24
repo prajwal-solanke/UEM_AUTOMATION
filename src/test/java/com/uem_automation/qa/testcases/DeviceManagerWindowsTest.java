@@ -119,4 +119,25 @@ public class DeviceManagerWindowsTest extends Base {
 		deviceManagerPage.clickOnSystemProfileTab();
 		Assert.assertTrue(deviceManagerPage.isSystemSettingsWindowsNodeDisplayed(), "System Settings Windows Node is not displayed");
 	}
+
+	@Test(priority = 7)
+	public void TC_DM_007_UserIsAbleToSwitchGroupInformationBetweenCardAndGridOnTheGroup() {
+		deviceManagerPage.clickOnTheGroup(testdataProp.getProperty("groupName"));
+		deviceManagerPage.clickOnTheGroupInformationTab();
+		deviceManagerPage.checkToogleDisplayView();
+		deviceManagerPage.changeToogleDisplayView("card"); //card //grid
+		deviceManagerPage.checkToogleDisplayView();
+		deviceManagerPage.changeToogleDisplayView("grid"); //card //grid
+		deviceManagerPage.checkToogleDisplayView();
+	}
+
+	@Test(priority = 8)
+	public void TC_DM_008_UserIsAbleToViewHelpForEveryModule() {
+		// Click on the group from the test data and verify it
+		deviceManagerPage.clickOnTheGroup(testdataProp.getProperty("groupName"));
+
+		// Assert that the Help Manual title is correct
+		String helpManualTitle = deviceManagerPage.clickOnHelpManual();
+		Assert.assertEquals(helpManualTitle, "UnifiedX PRO User Guide");
+	}
 }

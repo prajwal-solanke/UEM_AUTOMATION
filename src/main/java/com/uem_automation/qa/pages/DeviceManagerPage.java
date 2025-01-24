@@ -1,6 +1,7 @@
 package com.uem_automation.qa.pages;
 
 import java.time.Duration;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -133,6 +134,15 @@ public class DeviceManagerPage {
     @FindBy(xpath = "//a[contains(.,'Right Menu Position')]//span[@datamenu-position='right']")
     private WebElement rightMenuPositionToRightDirection;
 
+    @FindBy(xpath = "//table[@id='tblGroupListCard1']")
+    private WebElement tableGroupListCard;
+
+    @FindBy(xpath = "//a[@id='btToggleDisplay']")
+    private WebElement toogleDisplayButton;
+
+    @FindBy(xpath = "//div[@data-original-title='Help Manual']")
+    private WebElement helpManualButton;
+
     // constructor
     public DeviceManagerPage(WebDriver driver) {
         this.driver = driver;
@@ -158,10 +168,13 @@ public class DeviceManagerPage {
     }
 
     public void clickOnTheGroup(String groupNameProperty) {
+        // Wait for the AJAX loader to disappear
         wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
-        WebElement grp = driver.findElement(By.xpath("//span[contains(text(), '" + groupNameProperty + " (')]"));
-        wait.until(ExpectedConditions.elementToBeClickable(grp));
-        grp.click();
+
+        // Wait until the group element is clickable, then click on it
+        WebElement group = driver.findElement(By.xpath("//span[contains(text(), '" + groupNameProperty + " (')]"));
+        wait.until(ExpectedConditions.elementToBeClickable(group));
+        group.click();
     }
 
     public void clickOnTheGroupInformationTab() {
@@ -348,4 +361,47 @@ public class DeviceManagerPage {
             userExitIcon.click();
         }
     }
+
+    public void changeToogleDisplayView(String view) {
+        if(view == "cards") {
+            if(!tableGroupListCard.getAttribute("class").contains("cards")) {
+                toogleDisplayButton.click();
+            }
+        } else if (view == "grid") {
+            if(tableGroupListCard.getAttribute("class").contains("cards")) {
+                toogleDisplayButton.click();
+            }
+        }
+    }
+
+    public void checkToogleDisplayView() {
+        if(tableGroupListCard.getAttribute("class").contains("cards")) {
+            System.out.println("Toogle View: Cards");
+        } else if(!tableGroupListCard.getAttribute("class").contains("cards")){
+            System.out.println("Toogle View: Grid");
+        }
+    }
+
+    public String clickOnHelpManual() {
+        // Click on the help manual button
+        helpManualButton.click();
+
+        // Store the current window handle (first tab/window)
+        String firstWindowHandle = driver.getWindowHandle();
+
+        // Wait for a new window/tab to open
+//        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+
+        // Switch to the new window/tab
+        for (String handle : driver.getWindowHandles()) {
+            if (!handle.equals(firstWindowHandle)) {
+                driver.switchTo().window(handle);
+                break;
+            }
+        }
+
+        // Return the title of the new window/tab
+        return driver.getTitle();
+    }
+
 }
