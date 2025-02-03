@@ -2,9 +2,7 @@ package com.uem_automation.qa.testcases;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import com.uem_automation.qa.base.Base;
 import com.uem_automation.qa.pages.DeviceManagerPage;
@@ -21,7 +19,8 @@ public class DeviceManagerWindowsTest extends Base {
 		super();
 	}
 
-	@BeforeMethod
+//	@BeforeMethod
+	@BeforeClass
 	public void setUp() {
 		driver = initializeBrowserAndOpenApplicationURL(configProp.getProperty("browserName"));
 
@@ -38,12 +37,18 @@ public class DeviceManagerWindowsTest extends Base {
 //		deviceManagerPage.waitTillFooterCompanyWebsiteURLIsDisplayed(testdataProp.getProperty("companyWebsiteUrl"));
 	}
 
-	@AfterMethod
+	@BeforeMethod
+	public void selectDeviceManagerMenu() {
+		deviceManagerPage.selectDeviceManagerMenu();
+	}
+
+//	@AfterMethod
+	@AfterClass
 	public void tearDown() {
 		driver.quit();
 	}
 
-	@Test(priority = 1) // Validate users are able to view the settings applied on the Group
+	@Test(priority = 1) // UX-UEM-WD-005 // Validate users are able to view the settings applied on the Group
 	public void TC_DMW_001_Validate_users_able_to_view_the_settings_applied_on_the_group() {
 		deviceManagerPage.clickOnTheGroup(testdataProp.getProperty("groupName"));
 		deviceManagerPage.clickOnTheGroupInformationTab();
@@ -53,7 +58,7 @@ public class DeviceManagerWindowsTest extends Base {
 				"[Error: actualGroupInfo does not match with expectedGroupInfo]");
 	}
 
-	@Test(priority = 2) // Validate users are able to apply Execute later task or saved task on group.
+	@Test(priority = 2) // UX-UEM-WD-008 // Validate users are able to apply Execute later task or saved task on group.
 	public void TC_DMW_002_Validate_users_able_to_apply_execute_later_or_saved_task_on_the_group() {
 		deviceManagerPage.clickOnTheGroup(testdataProp.getProperty("groupName"));
 		deviceManagerPage.clickOnRHSMenu();
@@ -76,7 +81,7 @@ public class DeviceManagerWindowsTest extends Base {
 		Assert.assertTrue(deviceManagerPage.isTaskEntryDisplayed(), "[Error: Task entry is not displayed]");
 	}
 
-	@Test(priority = 3) // Validate users are able to view the information on the Windows Os Profile settings defined on the Group
+	@Test(priority = 3) // UX-UEM-WD-006 // Validate users are able to view the information on the Windows Os Profile settings defined on the Group
 	public void TC_DMW_003_Validate_users_are_able_to_view_the_information_on_the_windows_os_profile_settings_defined_on_the_group() {
 		deviceManagerPage.clickOnTheGroup(testdataProp.getProperty("groupName"));
 		deviceManagerPage.clickOnTheWindowsOsProfileTab();
@@ -86,7 +91,7 @@ public class DeviceManagerWindowsTest extends Base {
 				"[Error: actualWindowsOsProfileInfo does not match with expectedWindowsOsProfileInfo]");
 	}
 
-	@Test(priority = 4) // Validate users are able to view the information on the Linux Os Profile settings defined on the Group
+	@Test(priority = 4) // UX-UEM-WD-007 // Validate users are able to view the information on the Linux Os Profile settings defined on the Group
 	public void TC_DMW_004_Validate_users_are_able_to_view_the_information_on_the_linux_os_profile_settings_defined_on_the_group() {
 		deviceManagerPage.clickOnTheGroup(testdataProp.getProperty("groupName"));
 		deviceManagerPage.clickOnTheLinuxOsProfileTab();
@@ -120,7 +125,7 @@ public class DeviceManagerWindowsTest extends Base {
 		Assert.assertTrue(deviceManagerPage.isSystemSettingsWindowsNodeDisplayed(), "System Settings Windows Node is not displayed");
 	}
 
-	@Test(priority = 7)
+	@Test(priority = 7) // UX-UEM-WD-001
 	public void TC_DM_007_UserIsAbleToSwitchGroupInformationBetweenCardAndGridOnTheGroup() {
 		deviceManagerPage.clickOnTheGroup(testdataProp.getProperty("groupName"));
 		deviceManagerPage.clickOnTheGroupInformationTab();
@@ -131,13 +136,92 @@ public class DeviceManagerWindowsTest extends Base {
 		deviceManagerPage.checkToogleDisplayView();
 	}
 
-	@Test(priority = 8)
+	@Test(priority = 8) // UX-UEM-WD-002
 	public void TC_DM_008_UserIsAbleToViewHelpForEveryModule() {
 		// Click on the group from the test data and verify it
 		deviceManagerPage.clickOnTheGroup(testdataProp.getProperty("groupName"));
 
 		// Assert that the Help Manual title is correct
-		String helpManualTitle = deviceManagerPage.clickOnHelpManual();
+		String helpManualTitle = deviceManagerPage.viewHelpManaualAndGetTitle();
 		Assert.assertEquals(helpManualTitle, "UnifiedX PRO User Guide");
 	}
+
+	@Test(priority = 9) // UX-UEM-WD-003
+	public void TC_DM_009_UserIsAbleToViewUpdatedDataOnTheGroup() {
+		deviceManagerPage.selectTheGroup("UEM_AUTOMATION");
+		deviceManagerPage.selectTheInfoTab("Group Information");
+//		deviceManagerPage.getDataOnGroupInformation("Group Name");
+		deviceManagerPage.verifyDataOnGroupInformation("Group Name", "UEM_AUTOMATION");
+		deviceManagerPage.verifyDataOnGroupInformation("Group Hierarchy", "UEM_AUTOMATION");
+		deviceManagerPage.verifyDataOnGroupInformation("Group Type", "Custom");
+		deviceManagerPage.verifyDataOnGroupInformation("No of Subgroup", "0");
+		deviceManagerPage.verifyDataOnGroupInformation("Total Device", "2");
+		deviceManagerPage.verifyDataOnGroupInformation("Default Template", "0");
+		deviceManagerPage.verifyDataOnGroupInformation("Policy Count", "4");
+		deviceManagerPage.verifyDataOnGroupInformation("Pending Task", "0");
+		deviceManagerPage.verifyDataOnGroupInformation("In-process Task", "0");
+		deviceManagerPage.verifyDataOnGroupInformation("Closed Task", "23");
+		deviceManagerPage.verifyDataOnGroupInformation("Repository Connection", "FDM_HTTP");
+	}
+
+	@Test(priority = 10) // UX-UEM-WD-004
+	public void TC_DM_010_UserIsAbleToViewFullScreenForEveryModule() {
+		deviceManagerPage
+				.selectTheGroup("UEM_AUTOMATION")
+				.selectTheInfoTab("Group Information")
+				.viewFullScreen();
+	}
+
+	@Test(priority = 11) // UX-UEM-WD-009
+	public void TC_DM_011_Users_are_able_to_search_os_specific_tasks() {
+		deviceManagerPage
+				.selectTheGroup("UEM_AUTOMATION")
+				.selectTheInfoTab("Task Manager")
+				.selectTaskManagerOs("Windows")
+				.displayRecentTask();
+	}
+
+	@Test(priority = 12) // UX-UEM-WD-010
+	public void TC_DM_012_Users_are_able_to_search_in_the_column() {
+		deviceManagerPage
+				.selectTheGroup("UEM_AUTOMATION")
+				.selectTheInfoTab("Task Manager")
+				.selectTaskManagerOs("Windows")
+//				.displayRecentTask();
+				.columnFilterToogle("Enable")
+				.searchTheFunctionNameAndVerifySettingIsDisplayed("Keyboard Settings"); //Keyboard Settings
+	}
+
+	@Test(priority = 13) // UX-UEM-WD-011
+	public void TC_DM_013_Users_are_able_to_search_in_the_column() {
+		deviceManagerPage
+				.selectTheGroup("UEM_AUTOMATION")
+				.selectTheInfoTab("Task Manager")
+				.selectTaskManagerOs("Windows")
+				.selectColumnVisiblity("Function Name")
+				.copySettingsToTheClipboard()
+				.exportToCsv()
+				.exportToExcel()
+				.exportToPdf();
+//				.print(); // it's not implemented yet
+	}
+
+	@Test(priority = 14) // UX-UEM-WD-012
+	public void TC_DM_014_Users_are_able_to_view_applied_task_on_the_group() {
+		deviceManagerPage
+				.selectTheGroup("UEM_AUTOMATION")
+				.selectTheInfoTab("Task Activity")
+				.selectTheRecord_OsName_functionName_AndPrintAllTasks("1 Week", "All", "All");
+	}
+
+	@Test(priority = 15) // UX-UEM-WD-013
+	public void TC_DM_015_Users_are_able_to_use_filter_selectRecords_osName_functionName() {
+		deviceManagerPage
+				.selectTheGroup("UEM_AUTOMATION")
+				.selectTheInfoTab("Task Activity")
+				.selectTheRecord_OsName_functionName_AndPrintAllTasks("1 Month", "Windows", "Synchronise Inventory");
+	}
+
+
+
 }

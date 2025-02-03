@@ -1,18 +1,15 @@
 package com.uem_automation.qa.pages;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Set;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.math3.analysis.function.Exp;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 
 import com.uem_automation.qa.utils.Utilities;
@@ -26,10 +23,12 @@ public class DeviceManagerPage {
     @FindBy(xpath = "//div[@class='AjaxLoaderOuter loaderDivInitial']//button[@type='button'][normalize-space()='Please wait...']")
     private WebElement ajaxLoaderOuter;
 
-    @FindBy(xpath = "//a[@class='topbrand-logo d-none d-block']//img[@alt='Logo']")//a[@class='topbrand-logo d-none d-block']//img[@alt='Logo']")
+    @FindBy(xpath = "//a[@class='topbrand-logo d-none d-block']//img[@alt='Logo']")
+//a[@class='topbrand-logo d-none d-block']//img[@alt='Logo']")
     private WebElement logoTopMenu;
 
-    @FindBy(xpath = "//img[@src='theme/dist/assets/media/logos/leftMenu-Logo.png']") //img[@src='theme/dist/assets/media/logos/leftMenu-Logo.png']")
+    @FindBy(xpath = "//img[@src='theme/dist/assets/media/logos/leftMenu-Logo.png']")
+    //img[@src='theme/dist/assets/media/logos/leftMenu-Logo.png']")
     private WebElement logoLeftMenu;
 
     @FindBy(xpath = "//label[@id='ContentPlaceHolder1_MUIMainMenulblGrpInfrmtn']")
@@ -143,11 +142,71 @@ public class DeviceManagerPage {
     @FindBy(xpath = "//div[@data-original-title='Help Manual']")
     private WebElement helpManualButton;
 
+    @FindBy(xpath = "//a[@id='achForGrp']")
+    private WebElement buttonReload;
+
+    @FindBy(xpath = "//a[@onclick='return fullscreenMap(this);']")
+    private WebElement buttonFullscreen;
+
+    @FindBy(xpath = "//select[@id='ddlTaskManagerdetailsOSType']")
+    private WebElement taskManagerSelectOsDropdown;
+
+    @FindBy(xpath = "//label[@for='chkshowcolumnfiltertblTaskManagerdetails']")
+    private WebElement toogleColumnFilter;
+
+    @FindBy(xpath = "//input[@placeholder='Search Function Name']")
+    private WebElement searchFunctionTextbox;
+
+    @FindBy(xpath = "//button[@title='Column Visibility']")
+    private WebElement buttonColumnVisiblility;
+
+    @FindBy(xpath = "//button[@title='Copy']")
+    private WebElement buttonCopyAllTaskRows;
+
+    @FindBy(xpath = "//button[@title='Export to CSV']")
+    private WebElement buttonExportToCsv;
+
+    @FindBy(xpath = "//button[@title='Export to Excel']")
+    private WebElement buttonExportToExcel;
+
+    @FindBy(xpath = "//button[@title='Export to PDF']")
+    private WebElement buttonExportPdf;
+
+    @FindBy(xpath = "//select[@id='ddlScheduleDaysTaskDetailReport']")
+    private WebElement dropdownRecord;
+
+    @FindBy(xpath = "//select[@id='ddlOsTypeTaskDetailReport']")
+    private WebElement dropdownOsName;
+
+    @FindBy(xpath = "//button[@id='ContentPlaceHolder1_btnSearchTaskReport']")
+    private WebElement buttonSearchTaskActivity;
+
+    @FindBy(xpath = "//select[@id='ddlFunctionNameTaskDetailReport']")
+    private WebElement dropdownFunctionName;
+
+    @FindBy(xpath = "//div[@data-placement='bottom']//a[@id='ibtntHome']")
+    private WebElement menuDeviceManager;
+//
+//    @FindBy(xpath = "xxxx")
+//    private WebElement xxxx;
+//
+//    @FindBy(xpath = "xxxx")
+//    private WebElement xxxx;
+//
+//    @FindBy(xpath = "xxxx")
+//    private WebElement xxxx;
+//
+//    @FindBy(xpath = "xxxx")
+//    private WebElement xxxx;
+
     // constructor
     public DeviceManagerPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
+
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    Select select;
 
     // Actions
     public boolean isLogoDisplayed(String companyWebsiteUrlproperty) {
@@ -175,6 +234,7 @@ public class DeviceManagerPage {
         WebElement group = driver.findElement(By.xpath("//span[contains(text(), '" + groupNameProperty + " (')]"));
         wait.until(ExpectedConditions.elementToBeClickable(group));
         group.click();
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
     }
 
     public void clickOnTheGroupInformationTab() {
@@ -284,7 +344,9 @@ public class DeviceManagerPage {
 
     public void expandTheGroupSelected() {
         try {
+            wait.until(ExpectedConditions.elementToBeClickable(expandSelectedGroupIconElement));
             expandSelectedGroupIconElement.click();
+//            js.executeScript("arguments[0].click();", expandSelectedGroupIconElement);
         } catch (NoSuchElementException e) {
             Assert.fail("Selected Group is Empty.");
         } catch (Exception e) {
@@ -316,11 +378,11 @@ public class DeviceManagerPage {
     }
 
     public void logOutFromApplication() {
-		if(userNameElementLeft.isDisplayed()) {
-			userNameElementLeft.click();
-		} else if(userNameElementTop.isDisplayed()) {
+        if (userNameElementLeft.isDisplayed()) {
+            userNameElementLeft.click();
+        } else if (userNameElementTop.isDisplayed()) {
             userNameElementTop.click();
-		}
+        }
 //        userNameElementTop.click();
         logoutButtonElement.click();
         buttonAlertLogoOutElement.click();
@@ -341,7 +403,7 @@ public class DeviceManagerPage {
     }
 
     public void changeLeftMenuPosition() {
-        if(userNameElementLeft.isDisplayed()) {
+        if (userNameElementLeft.isDisplayed()) {
             userNameElementLeft.click();
             wait.until(ExpectedConditions.elementToBeClickable(leftMenuPositionToTopDirection));
             leftMenuPositionToTopDirection.click();
@@ -363,31 +425,32 @@ public class DeviceManagerPage {
     }
 
     public void changeToogleDisplayView(String view) {
-        if(view == "cards") {
-            if(!tableGroupListCard.getAttribute("class").contains("cards")) {
+        if (view == "cards") {
+            if (!tableGroupListCard.getAttribute("class").contains("cards")) {
                 toogleDisplayButton.click();
             }
         } else if (view == "grid") {
-            if(tableGroupListCard.getAttribute("class").contains("cards")) {
+            if (tableGroupListCard.getAttribute("class").contains("cards")) {
                 toogleDisplayButton.click();
             }
         }
     }
 
     public void checkToogleDisplayView() {
-        if(tableGroupListCard.getAttribute("class").contains("cards")) {
+        if (tableGroupListCard.getAttribute("class").contains("cards")) {
             System.out.println("Toogle View: Cards");
-        } else if(!tableGroupListCard.getAttribute("class").contains("cards")){
+        } else if (!tableGroupListCard.getAttribute("class").contains("cards")) {
             System.out.println("Toogle View: Grid");
         }
     }
 
-    public String clickOnHelpManual() {
+    public String viewHelpManaualAndGetTitle() {
         // Click on the help manual button
         helpManualButton.click();
 
         // Store the current window handle (first tab/window)
         String firstWindowHandle = driver.getWindowHandle();
+        String newWindowTitle = "";
 
         // Wait for a new window/tab to open
 //        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
@@ -396,12 +459,171 @@ public class DeviceManagerPage {
         for (String handle : driver.getWindowHandles()) {
             if (!handle.equals(firstWindowHandle)) {
                 driver.switchTo().window(handle);
+                newWindowTitle = driver.getTitle();
                 break;
             }
         }
+        driver.close();
 
         // Return the title of the new window/tab
-        return driver.getTitle();
+//        return driver.getTitle();
+        driver.switchTo().window(firstWindowHandle);
+        return newWindowTitle;
+        
     }
 
+//    public void selectTheGroup(String groupName) {
+//        // Wait for the AJAX loader to disappear
+//        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+//
+//        // Wait until the group element is clickable, then click on it
+//        WebElement group = driver.findElement(By.xpath("//span[contains(text(), '" + groupName + " (')]"));
+//        wait.until(ExpectedConditions.elementToBeClickable(group));
+//        group.click();
+//        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+//    }
+
+    public DeviceManagerPage selectTheGroup(String groupName) {
+        // Wait for the AJAX loader to disappear
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+        // Wait until the group element is clickable, then click on it
+        WebElement group = driver.findElement(By.xpath("//span[contains(text(), '" + groupName + " (')]"));
+        wait.until(ExpectedConditions.elementToBeClickable(group));
+        group.click();
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        return this;
+    }
+
+//    public void selectTheInfoTab(String tab) {
+//        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+//        driver.findElement(By.xpath("//label[contains(@id, 'MainMenulbl')][normalize-space()='"+ tab +"']")).click();
+//        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+//    }
+
+    public DeviceManagerPage selectTheInfoTab(String tab) {
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        driver.findElement(By.xpath("//label[contains(@id, 'MainMenulbl')][normalize-space()='" + tab + "']")).click();
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        return this;
+    }
+
+    public void verifyDataOnGroupInformation(String dataLabel, String dataValue) {
+        buttonReload.click();
+//        System.out.println(driver.findElement(By.xpath("//tbody//label[contains(normalize-space(),'Group Name')]/parent::td")).getText());
+        String currentValue = driver.findElement(By.xpath("//tbody//label[contains(normalize-space(),'" + dataLabel + "')]/parent::td")).getText();// | //tbody//label[contains(.,'"+dataLabel+"')]/ancestor::td//spaan | //tbody//label[contains(.,'"+dataLabel+"')]/ancestor::td//a)")).getText();
+
+        if (!currentValue.contains(dataValue)) {
+            Assert.assertEquals(currentValue, dataValue, dataLabel + " value is not matching with " + dataValue);
+        }
+    }
+
+    public String getDataOnGroupInformation(String dataLabel) {
+        String currentValue = driver.findElement(By.xpath("" +
+                "//tbody//label[contains(.,'" + dataLabel + "')]/following-sibling::text() | " +
+                "//tbody//label[contains(.,'" + dataLabel + "')]/ancestor::td//spaan | " +
+                "//tbody//label[contains(.,'" + dataLabel + "')]/ancestor::td//a")).getText();
+
+        return currentValue;
+    }
+
+    public void viewFullScreen() {
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        if (!buttonFullscreen.getDomAttribute("class").contains(" on")) {
+            buttonFullscreen.click();
+            buttonFullscreen.click();
+        }
+    }
+
+    public DeviceManagerPage selectTaskManagerOs(String os) {
+        Select select = new Select(taskManagerSelectOsDropdown);
+        select.selectByVisibleText(os);
+        return this;
+    }
+
+    public void displayRecentTask() {
+        System.out.println(
+                "Recent Task: " +
+                        driver.findElement(By.xpath("//table[@id='tblTaskManagerdetails']//tbody//tr[last()]")).getText());
+    }
+
+    public DeviceManagerPage columnFilterToogle(String status) {
+
+//        boolean currentStatus = driver.findElement(By.xpath("//table[@id='tblTaskManagerdetails']//tr[@class='HeaderStyleSearch hidden']")).getDomAttribute("class").contains("hidden");
+
+        if (status.equalsIgnoreCase("enable")) {
+            toogleColumnFilter.click();
+        }
+
+        return this;
+    }
+
+    public void searchTheFunctionNameAndVerifySettingIsDisplayed(String settingName) {
+        searchFunctionTextbox.clear();
+        searchFunctionTextbox.sendKeys(settingName);
+
+        String settingListEntry = "";
+        try {
+            settingListEntry = driver.findElement(By.xpath("(//a[@title='" + settingName + "'])[1]")).getText();
+        } catch (NoSuchElementException e) {
+            Assert.assertEquals(settingListEntry, settingName, "Error: " + settingName + "Setting is not displayed " + e.getMessage());
+        }
+    }
+
+    public DeviceManagerPage selectColumnVisiblity(String columnName) {
+        buttonColumnVisiblility.click();
+        driver.findElement(By.xpath("//button[contains(@class, 'columnVisibility')]//span[contains(.,'" + columnName + "')]")).click();
+        driver.findElement(By.xpath("//div[@class='dt-button-background']")).click();
+        return this;
+    }
+
+    public DeviceManagerPage copySettingsToTheClipboard() {
+        buttonCopyAllTaskRows.click();
+        Assert.assertTrue(driver.findElement(By.xpath("//h2[normalize-space()='Copy to clipboard']")).isDisplayed());
+        return this;
+    }
+
+    public DeviceManagerPage exportToCsv() {
+        buttonExportToCsv.click();
+        return this;
+    }
+
+    public DeviceManagerPage exportToExcel() {
+        buttonExportToExcel.click();
+        return this;
+    }
+
+    public DeviceManagerPage exportToPdf() {
+        buttonExportPdf.click();
+        return this;
+    }
+
+    public void selectTheRecord_OsName_functionName_AndPrintAllTasks(String recordProperty, String osName, String functionName) {
+
+        select = new Select(dropdownRecord);
+        select.selectByVisibleText(recordProperty);
+
+        select = new Select(dropdownOsName);
+        select.selectByVisibleText(osName);
+
+        select = new Select(dropdownFunctionName);
+        select.selectByVisibleText(functionName);
+
+        buttonSearchTaskActivity.click();
+
+        // printing the task below on console
+
+        List<WebElement> elements = driver.findElements(By.xpath("//table[@id='tblTaskDetailReport']//td[6]")); // task names column
+        for(WebElement element: elements) {
+            System.out.println("Task Name: " + element.getText());
+        }
+
+    }
+
+    public void selectDeviceManagerMenu() {
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        wait.until(ExpectedConditions.elementToBeClickable(menuDeviceManager));
+        menuDeviceManager.click();
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+    }
 }
