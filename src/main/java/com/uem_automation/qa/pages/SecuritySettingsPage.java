@@ -377,10 +377,11 @@ public class SecuritySettingsPage {
             }
 
         } else if (selectTab.equalsIgnoreCase("FBWF Cache Size")) {
-            fbwfCacheSize.click();
-
-//            String setMaxCacheSizeForNextSession = "1024"; //testdata // in mb's
-            setMaxCacheSizeForNextSessionTextbox.sendKeys(setMaxCacheSizeForNextSession); //Cache size 32 MB to 1024 MB
+            Assert.fail("Note: FBWF Cache Size is disabled.");
+//            fbwfCacheSize.click();
+//
+////            String setMaxCacheSizeForNextSession = "1024"; //testdata // in mb's
+//            setMaxCacheSizeForNextSessionTextbox.sendKeys(setMaxCacheSizeForNextSession); //Cache size 32 MB to 1024 MB
 
         } else if (selectTab.equalsIgnoreCase("Overlay Settings")) {
             overlaySettingsLabel.click();

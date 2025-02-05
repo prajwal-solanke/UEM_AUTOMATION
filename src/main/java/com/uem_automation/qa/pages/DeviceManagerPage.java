@@ -160,7 +160,7 @@ public class DeviceManagerPage {
     @FindBy(xpath = "//button[@title='Column Visibility']")
     private WebElement buttonColumnVisiblility;
 
-    @FindBy(xpath = "//button[@title='Copy']")
+    @FindBy(xpath = "//div[@class='datatableOptionsMain']//span[contains(text(),'Copy')]/parent::button | //button[@title='Copy']")
     private WebElement buttonCopyAllTaskRows;
 
     @FindBy(xpath = "//button[@title='Export to CSV']")
@@ -186,6 +186,49 @@ public class DeviceManagerPage {
 
     @FindBy(xpath = "//div[@data-placement='bottom']//a[@id='ibtntHome']")
     private WebElement menuDeviceManager;
+
+    @FindBy(xpath = "//input[@aria-controls='tblTaskDetailReport']")
+    private WebElement taskActivitySearchTextbox;
+
+    @FindBy(xpath = "//input[@id='chkTaskInfoCancelAllTaskGrp']")
+    private WebElement selectAllTasksCheckbox;
+
+    @FindBy(xpath = "//a[@id='btnDMTaskInfoPauseTaskGRP']")
+    private WebElement buttonPause;
+
+    @FindBy(xpath = "//input[@id='btnOkConformation']")
+    private WebElement buttonOkConfirmation;
+
+    @FindBy(xpath = "//input[@id='ContentPlaceHolder1_btnCancelConfirmation']")
+    private WebElement buttonCloseConfirmation;
+
+    @FindBy(xpath = "//a[@id='btnDMTaskInfoResumeTaskGRP']")
+    private WebElement buttonResume;
+
+    @FindBy(xpath = "//a[@id='btnDMTaskInfoCancelTaskGRP']")
+    private WebElement buttonCancel;
+
+    // apply mouse setting
+    @FindBy(xpath = "//a[@id='kt_aside_toggle']")
+    private WebElement rhsMenuToogleElement;
+
+    @FindBy(xpath = "//li[@id='lblMenu_Windows']")
+    private WebElement windowsLabelMenu;
+
+    @FindBy(xpath = "//ul[@class='menu-nav mt-n1']//li[@id='lblMenu_SysSettings_Window']")
+    private WebElement windowsSystemSettingsDropdownRhsMenu;
+
+    @FindBy(xpath = "//ul[@class='menu-nav mt-n1']//li[@id='lblMenu_PeripheralSettings_window']")
+    private WebElement windowsSystemSettingsPeripheralSettingsDropdown;
+
+    @FindBy(xpath = "//ul[@class='menu-nav mt-n1']//li[@id='lblMenu_SysSettings_Window']//label[@title='Mouse Settings'][normalize-space()='Mouse Settings']")
+    private WebElement windowsSystemSettingsPeripheralSettings_MouseSettings_Menu;
+
+    @FindBy(xpath = "//input[@id='WindowsMouseSettings_btnApply']")
+    private WebElement mouseSettingsApplyButton;
+
+    @FindBy(xpath = "//label[@id='WindowsMouseSettings_lblMsg']")
+    private WebElement mouseSettingsTaskUpdateStatusMessage;
 //
 //    @FindBy(xpath = "xxxx")
 //    private WebElement xxxx;
@@ -541,10 +584,11 @@ public class DeviceManagerPage {
         return this;
     }
 
-    public void displayRecentTask() {
+    public DeviceManagerPage displayRecentTask() {
         System.out.println(
                 "Recent Task: " +
                         driver.findElement(By.xpath("//table[@id='tblTaskManagerdetails']//tbody//tr[last()]")).getText());
+        return this;
     }
 
     public DeviceManagerPage columnFilterToogle(String status) {
@@ -578,7 +622,8 @@ public class DeviceManagerPage {
     }
 
     public DeviceManagerPage copySettingsToTheClipboard() {
-        buttonCopyAllTaskRows.click();
+        wait.until(ExpectedConditions.visibilityOf(buttonCopyAllTaskRows));
+        wait.until(ExpectedConditions.elementToBeClickable(buttonCopyAllTaskRows)).click();
         Assert.assertTrue(driver.findElement(By.xpath("//h2[normalize-space()='Copy to clipboard']")).isDisplayed());
         return this;
     }
@@ -593,8 +638,9 @@ public class DeviceManagerPage {
         return this;
     }
 
-    public DeviceManagerPage exportToPdf() {
+    public DeviceManagerPage exportToPdf() throws InterruptedException {
         buttonExportPdf.click();
+        Thread.sleep(2000);
         return this;
     }
 
@@ -625,5 +671,97 @@ public class DeviceManagerPage {
         wait.until(ExpectedConditions.elementToBeClickable(menuDeviceManager));
         menuDeviceManager.click();
         wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+    }
+
+    public DeviceManagerPage searchTaskDetailsInSearchBoxAndCheckIt(String taskDetail) {
+        taskActivitySearchTextbox.sendKeys(taskDetail);
+        selectAllTasksCheckbox.click();
+//        selectAllTasksCheckbox.click();
+        return this;
+    }
+
+    public DeviceManagerPage applyPause() {
+        buttonPause.click();
+        areYouSureWantToChangeTaskStatus("ok");
+        return this;
+    }
+
+    private void areYouSureWantToChangeTaskStatus(String action) {
+        if(action.equalsIgnoreCase("ok")) {
+            buttonOkConfirmation.click(); //input[@id='btnOkConformation']
+        } else {
+            buttonCloseConfirmation.click(); //input[@id='ContentPlaceHolder1_btnCancelConfirmation']
+        }
+    }
+
+    public DeviceManagerPage applyResume() {
+        buttonResume.click();
+        areYouSureWantToChangeTaskStatus("ok");
+        return this;
+    }
+
+    public DeviceManagerPage applyCancel() {
+        buttonCancel.click();
+        areYouSureWantToChangeTaskStatus("ok");
+        return this;
+    }
+
+    public DeviceManagerPage applyMouseSettings() {
+
+        if (rhsMenuToogleElement.getAttribute("class").contains("active")) {
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.elementToBeClickable(rhsMenuToogleElement));
+            rhsMenuToogleElement.click();
+        }
+
+        windowsLabelMenu.click();
+
+        if (!(windowsSystemSettingsDropdownRhsMenu.getAttribute("class").contains("menu-item-open"))) {
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.elementToBeClickable(windowsSystemSettingsDropdownRhsMenu));
+            windowsSystemSettingsDropdownRhsMenu.click();
+        }
+
+        if (!(windowsSystemSettingsPeripheralSettingsDropdown.getAttribute("class").contains("menu-item-open"))) {
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.elementToBeClickable(windowsSystemSettingsPeripheralSettingsDropdown));
+            windowsSystemSettingsPeripheralSettingsDropdown.click();
+        }
+
+//        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+//		wait.until(ExpectedConditions.elementToBeClickable(rhsMenuToogleElement));
+//		rhsMenuToogleElement.click();
+
+//        windowsSystemSettingsDropdown.click();
+//        windowsSystemSettingsPeripheralSettingsDropdown.click();
+        windowsSystemSettingsPeripheralSettings_MouseSettings_Menu.click();
+
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+//        doubleClickSpeedSlowSlider.click();
+//        doubleClickSpeedSlowSlider.sendKeys(Keys.ARROW_LEFT);
+//        doubleClickSpeedSlowSlider.sendKeys(Keys.ARROW_RIGHT);
+//
+//        pointerSpeedSlowSlider.click();
+//        pointerSpeedSlowSlider.sendKeys(Keys.ARROW_LEFT);
+//        pointerSpeedSlowSlider.sendKeys(Keys.ARROW_RIGHT);
+//
+////        String leftHandConfiguration = "Y"; // Y // N
+//        if (leftHandConfiguration.equalsIgnoreCase("Y")) {
+//            leftHandConfigurationCheckbox.click();  // Change in keyboard locale(s) settings will require explicit reboot.
+//        }
+
+        mouseSettingsApplyButton.click();
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+        iAgreeCheckbox.click();
+        okConfirmationButtonPopup.click();
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+        if (!((mouseSettingsTaskUpdateStatusMessage.getText()).equals("Request for settings update has been processed"))) {
+            Assert.fail(mouseSettingsTaskUpdateStatusMessage.getText());
+        }
+
+        return this;
     }
 }

@@ -241,7 +241,7 @@ public class UserSettingsPage {
 
         } else if (sourceName.equalsIgnoreCase("New Upload")) {
 
-            String connectionName = "FDM_HTTP"; //---Select--- //FDM_HTTP //CIFS //HTTPS
+            String connectionName = "WebIAS_HTTP"; //---Select--- //FDM_HTTP //CIFS //HTTPS
             select = new Select(connectionNameDropdown);
             select.selectByVisibleText(connectionName);
 
@@ -491,7 +491,7 @@ public class UserSettingsPage {
         }
         else if(sourceName.equalsIgnoreCase("New Upload")) {
 
-            String wallpaperConnectionName = "FDM_HTTP"; //---Select--- //FDM_HTTP //CIFS //HTTPS
+            String wallpaperConnectionName = "WebIAS_HTTP"; //---Select--- //FDM_HTTP //CIFS //HTTPS
             select = new Select(wallpaperConnectionNameDropdown);
             select.selectByVisibleText(wallpaperConnectionName);
 

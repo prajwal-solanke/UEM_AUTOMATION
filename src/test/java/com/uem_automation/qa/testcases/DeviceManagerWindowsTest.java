@@ -143,7 +143,7 @@ public class DeviceManagerWindowsTest extends Base {
 
 		// Assert that the Help Manual title is correct
 		String helpManualTitle = deviceManagerPage.viewHelpManaualAndGetTitle();
-		Assert.assertEquals(helpManualTitle, "UnifiedX PRO User Guide");
+		Assert.assertEquals(helpManualTitle, "Web IAS User Guide");
 	}
 
 	@Test(priority = 9) // UX-UEM-WD-003
@@ -155,13 +155,13 @@ public class DeviceManagerWindowsTest extends Base {
 		deviceManagerPage.verifyDataOnGroupInformation("Group Hierarchy", "UEM_AUTOMATION");
 		deviceManagerPage.verifyDataOnGroupInformation("Group Type", "Custom");
 		deviceManagerPage.verifyDataOnGroupInformation("No of Subgroup", "0");
-		deviceManagerPage.verifyDataOnGroupInformation("Total Device", "2");
+		deviceManagerPage.verifyDataOnGroupInformation("Total Device", "1");
 		deviceManagerPage.verifyDataOnGroupInformation("Default Template", "0");
-		deviceManagerPage.verifyDataOnGroupInformation("Policy Count", "4");
+		deviceManagerPage.verifyDataOnGroupInformation("Policy Count", "0");
 		deviceManagerPage.verifyDataOnGroupInformation("Pending Task", "0");
 		deviceManagerPage.verifyDataOnGroupInformation("In-process Task", "0");
-		deviceManagerPage.verifyDataOnGroupInformation("Closed Task", "23");
-		deviceManagerPage.verifyDataOnGroupInformation("Repository Connection", "FDM_HTTP");
+		deviceManagerPage.verifyDataOnGroupInformation("Closed Task", "0");
+		deviceManagerPage.verifyDataOnGroupInformation("Repository Connection", "WebIAS_HTTP");
 	}
 
 	@Test(priority = 10) // UX-UEM-WD-004
@@ -182,18 +182,19 @@ public class DeviceManagerWindowsTest extends Base {
 	}
 
 	@Test(priority = 12) // UX-UEM-WD-010
-	public void TC_DM_012_Users_are_able_to_search_in_the_column() {
-		deviceManagerPage
-				.selectTheGroup("UEM_AUTOMATION")
-				.selectTheInfoTab("Task Manager")
-				.selectTaskManagerOs("Windows")
-//				.displayRecentTask();
-				.columnFilterToogle("Enable")
-				.searchTheFunctionNameAndVerifySettingIsDisplayed("Keyboard Settings"); //Keyboard Settings
+	public void TC_DM_012_Users_are_able_to_search_in_column() {
+		Assert.fail("Note: Search in column is not availbale, column filter toogle enable/disable is removed");
+//		deviceManagerPage
+//				.selectTheGroup("UEM_AUTOMATION")
+//				.selectTheInfoTab("Task Manager")
+//				.selectTaskManagerOs("Windows")
+//				.displayRecentTask()
+//				.columnFilterToogle("Enable") // column filter toogle is removed in 3.10 WebIAS
+//				.searchTheFunctionNameAndVerifySettingIsDisplayed("Keyboard Settings"); //Keyboard Settings
 	}
 
 	@Test(priority = 13) // UX-UEM-WD-011
-	public void TC_DM_013_Users_are_able_to_search_in_the_column() {
+	public void TC_DM_013_Users_are_able_to_use_taskManager_tooltip_columnVisibility_copy_exportToCsv_exportToExcel_pdf_print_cancel_pause_resume() throws InterruptedException {
 		deviceManagerPage
 				.selectTheGroup("UEM_AUTOMATION")
 				.selectTheInfoTab("Task Manager")
@@ -219,7 +220,40 @@ public class DeviceManagerWindowsTest extends Base {
 		deviceManagerPage
 				.selectTheGroup("UEM_AUTOMATION")
 				.selectTheInfoTab("Task Activity")
-				.selectTheRecord_OsName_functionName_AndPrintAllTasks("1 Month", "Windows", "Synchronise Inventory");
+				.selectTheRecord_OsName_functionName_AndPrintAllTasks("1 Month", "Windows", "Shutdown");
+	}
+
+	@Test(priority = 16) // UX-UEM-WD-014  // try to execute this test on offline group to see the status
+	public void TC_DM_016_Users_are_able_to_use_taskActivity_tooltip_columnVisibility_copy_exportToCsv_exportToExcel_pdf_print_cancel_pause_resume() throws InterruptedException {
+		deviceManagerPage
+				.selectTheGroup("UEM_AUTOMATION")
+				.selectTheInfoTab("Task Activity")
+				.selectColumnVisiblity("Host Name")
+				.copySettingsToTheClipboard()
+				.exportToCsv()
+				.exportToExcel()
+				.exportToPdf()
+//				.print(); // it's not implemented yet
+				.applyMouseSettings()
+				.selectTheGroup("UEM_AUTOMATION")
+				.selectTheInfoTab("Task Activity")
+				.searchTaskDetailsInSearchBoxAndCheckIt("Mouse Settings")
+				.applyPause()
+				.searchTaskDetailsInSearchBoxAndCheckIt("Mouse Settings")
+				.applyResume()
+				.searchTaskDetailsInSearchBoxAndCheckIt("Mouse Settings")
+				.applyCancel();
+	}
+
+	@Test(priority = 17) // UX-UEM-WD-015  // try to execute this test on offline group to see the status
+	public void TC_DM_017_Users_are_able_to_cancel_recently_applied_() throws InterruptedException {
+		deviceManagerPage
+				.selectTheGroup("UEM_AUTOMATION")
+				.applyMouseSettings()
+				.selectTheGroup("UEM_AUTOMATION")
+				.selectTheInfoTab("Task Activity")
+				.searchTaskDetailsInSearchBoxAndCheckIt("Mouse Settings")
+				.applyCancel();
 	}
 
 

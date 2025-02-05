@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="UEM_AUTOAMATION_V2" />
+        <module name="UEM_AUTOAMATION_TESTNG_FRAMEWORK" />
       </profile>
     </annotationProcessing>
   </component>
