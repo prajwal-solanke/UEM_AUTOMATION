@@ -2,19 +2,14 @@ package com.uem_automation.qa.pages;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
 
-import org.apache.commons.math3.analysis.function.Exp;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 
 import com.uem_automation.qa.utils.Utilities;
-
-import javax.swing.*;
 
 public class DeviceManagerPage {
 
@@ -274,18 +269,55 @@ public class DeviceManagerPage {
     @FindBy(xpath = "//input[@id='XP_ComputerName_chkAutomatically']")
     private WebElement checkboxAutoGenerate;
 
-//    @FindBy(xpath = "xxxx")
-//    private WebElement xxxx;
+    // add to profile
+    @FindBy(xpath = "//a[@id='batchwiseCommonSettings_anchor']")
+    private WebElement commonSettingAnchor;
+
+    @FindBy(xpath = "//label[@id='lblEnable_GI']/preceding-sibling::span")
+    private WebElement enableCheck;
+
+    @FindBy(xpath = "//label[@id='lblDisable_GI']/preceding-sibling::span")
+    private WebElement disableCheck;
+
+    @FindBy(xpath = "//input[@id='btnModuleGlobalSettingSave']")
+    private WebElement userSettingsSave;
+
+    @FindBy(xpath = "//input[@id='lblCancel_GI']")
+    private WebElement userSettingsCancel;
+
+    @FindBy(xpath = "//label[@id='lblWindowsExecuteNow']/preceding-sibling::span")
+    private WebElement radioExecuteNow;
+
+    @FindBy(xpath = "//input[@id='WindowsMouseSettings_btnApply']")
+    private WebElement applyMouseSettings;
+
+    @FindBy(xpath = "//input[@id='btnRemoveAllPolicies']")
+    private WebElement buttonRemoveAllPolicies;
+
+    @FindBy(xpath = "//input[@id='btnRemoveAllPoliciesSave_GI']")
+    private WebElement buttonSaveRemoveAllPolicies;
+
+    @FindBy(xpath = "//input[@id='btnDeleteAllPermanentPoliciesApply']")
+    private WebElement buttonApplyRemoveAllPolicies;
+
+    @FindBy(xpath = "//span[@id='ContentPlaceHolder1_lblSummarybuttonClose']")
+    private WebElement buttonCloseRemoveAllPolicies;
+
+    @FindBy(xpath = "//input[@id='chkEnableBatchSettings']")
+    private WebElement enableBatchSettingCheckboxStatus;
+
+    @FindBy(xpath = "//input[@id='chkEnableBatchSettings']/following-sibling::span")
+    private WebElement enableBatchSettingCheckbox;
+
+    @FindBy(xpath = "//input[@id='txtModuleSettingBatchCount']")
+    private WebElement batchCountTextbox;
+
+    @FindBy(xpath = "//input[@id='txtModuleSettingBatchInterval']")
+    private WebElement batchIntervalTextbox;
 
 //    @FindBy(xpath = "xxxx")
 //    private WebElement xxxx;
-
-//    @FindBy(xpath = "xxxx")
-//    private WebElement xxxx;
-
-//    @FindBy(xpath = "xxxx")
-//    private WebElement xxxx;
-
+//
 //    @FindBy(xpath = "xxxx")
 //    private WebElement xxxx;
 
@@ -610,14 +642,15 @@ public class DeviceManagerPage {
         return this;
     }
 
-    public void verifyDataOnGroupInformation(String dataLabel, String dataValue) {
-        buttonReload.click();
+    public DeviceManagerPage verifyDataOnGroupInformation(String dataLabel, String dataValue) {
+        wait.until(ExpectedConditions.elementToBeClickable(buttonReload)).click();
 //        System.out.println(driver.findElement(By.xpath("//tbody//label[contains(normalize-space(),'Group Name')]/parent::td")).getText());
         String currentValue = driver.findElement(By.xpath("//tbody//label[contains(normalize-space(),'" + dataLabel + "')]/parent::td")).getText();// | //tbody//label[contains(.,'"+dataLabel+"')]/ancestor::td//spaan | //tbody//label[contains(.,'"+dataLabel+"')]/ancestor::td//a)")).getText();
 
         if (!currentValue.contains(dataValue)) {
             Assert.assertEquals(currentValue, dataValue, dataLabel + " value is not matching with " + dataValue);
         }
+        return this;
     }
 
     public String getDataOnGroupInformation(String dataLabel) {
@@ -885,6 +918,98 @@ public class DeviceManagerPage {
         wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
         if (!((computerNameStatusMessage.getText()).equals("Request for settings update has been processed"))) {
             Assert.fail(computerNameStatusMessage.getText());
+        }
+        return this;
+    }
+
+    public DeviceManagerPage applyMouseSettings1(String addToGroupProfile, String enableBatchSetting, String batchCount, String batchInterval) {
+
+        // opening the task module
+        if (rhsMenuToogleElement.getAttribute("class").contains("active")) {
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.elementToBeClickable(rhsMenuToogleElement));
+            rhsMenuToogleElement.click();
+        }
+
+        windowsLabelMenu.click();
+
+        if (!(windowsSystemSettingsDropdownRhsMenu.getAttribute("class").contains("menu-item-open"))) {
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.elementToBeClickable(windowsSystemSettingsDropdownRhsMenu));
+            windowsSystemSettingsDropdownRhsMenu.click();
+        }
+
+        if (!(windowsSystemSettingsPeripheralSettingsDropdown.getAttribute("class").contains("menu-item-open"))) {
+            wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+            wait.until(ExpectedConditions.elementToBeClickable(windowsSystemSettingsPeripheralSettingsDropdown));
+            windowsSystemSettingsPeripheralSettingsDropdown.click();
+        }
+
+        windowsSystemSettingsPeripheralSettings_MouseSettings_Menu.click();
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+
+        // add to group profile
+//        addToGroupProfile = "Y";
+        if(addToGroupProfile.equalsIgnoreCase("Y")) {
+            wait.until(ExpectedConditions.elementToBeClickable(commonSettingAnchor)).click();
+            if (!enableCheck.isSelected()) {
+                enableCheck.click();
+            }
+        } else if(addToGroupProfile.equalsIgnoreCase("N")) {
+            wait.until(ExpectedConditions.elementToBeClickable(commonSettingAnchor)).click();
+            if (!disableCheck.isSelected()) {
+                disableCheck.click();
+            }
+        }
+
+        // enable batch setting
+        if(enableBatchSetting.equalsIgnoreCase("Y")) {
+//            System.out.println(enableBatchSettingCheckbox.isSelected());
+            if(!enableBatchSettingCheckboxStatus.isSelected()) {
+                enableBatchSettingCheckbox.click();
+                wait.until(ExpectedConditions.elementToBeClickable(batchCountTextbox));
+                batchCountTextbox.clear();
+                batchCountTextbox.sendKeys(batchCount);
+                batchIntervalTextbox.clear();
+                batchIntervalTextbox.sendKeys(batchInterval); // min
+            }
+
+        } else if (enableBatchSetting.equalsIgnoreCase("N")) {
+//            System.out.println(enableBatchSettingCheckboxStatus.isSelected());
+            if(enableBatchSettingCheckboxStatus.isSelected()) {
+                enableBatchSettingCheckbox.click();
+//                js.executeScript("arguments[0].click();", enableBatchSettingCheckbox);
+            }
+        }
+
+        userSettingsSave.click();
+        userSettingsCancel.click();
+
+        // apply task - execute now
+        radioExecuteNow.click();
+        applyMouseSettings.click();
+
+        iAgreeCheckbox.click();
+        okConfirmationButtonPopup.click();
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+
+        // validate the success message
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        if (!((mouseSettingsTaskUpdateStatusMessage.getText()).equals("Request for settings update has been processed"))) {
+            Assert.fail(mouseSettingsTaskUpdateStatusMessage.getText());
+        }
+
+        return this;
+    }
+
+    public DeviceManagerPage removeAllPoliciesIn(String label) {
+        if(!driver.findElement(By.xpath("//a[@class='badge bg-primary text-decoration-none cardviewpolicycount1']")).getText().equalsIgnoreCase("0")) {
+            driver.findElement(By.xpath("//label[text()='" + label + "']/parent::td//a")).click();
+            buttonRemoveAllPolicies.click();
+            buttonSaveRemoveAllPolicies.click();
+            buttonApplyRemoveAllPolicies.click();
+            buttonCloseRemoveAllPolicies.click();
         }
         return this;
     }
