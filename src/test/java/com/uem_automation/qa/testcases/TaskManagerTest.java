@@ -1219,7 +1219,7 @@ public class TaskManagerTest extends Base {
 //    }
 
     // Software and Patch Install/Uninstall
-    @Test(priority = 60, dataProvider = "supplyTestData")//, dependsOnMethods = {"TC_TM_001_Create_Template"})
+    @Test(priority = 60, dataProvider = "supplyTestData", dependsOnMethods = {"TC_TM_001_Create_Template"})
     public void TC_TM_060_software_deployment_SoftwarePatchInstallUninstall(
 
             // searchAndViewTheTemplate
@@ -1229,8 +1229,8 @@ public class TaskManagerTest extends Base {
             String selectNewInstallOrUninstall, String sourceType, String source,
             String fileName, String parameter, String skipWriteFilter, String globalRepository) {
 
-        taskManagerPage.navigateToTemplateMangerRhsMenu();
-        templateManagerPage.searchAndViewTheTemplate(templateName);
+//        taskManagerPage.navigateToTemplateMangerRhsMenu();
+//        templateManagerPage.searchAndViewTheTemplate(templateName);
 
         // Software Deployment
         // Software and patch install uninstall

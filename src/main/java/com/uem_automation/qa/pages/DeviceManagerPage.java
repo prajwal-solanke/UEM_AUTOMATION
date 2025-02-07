@@ -753,7 +753,7 @@ public class DeviceManagerPage {
 
         List<WebElement> elements = driver.findElements(By.xpath("//table[@id='tblTaskDetailReport']//td[6]")); // task names column
         for(WebElement element: elements) {
-            System.out.println("Task Name: " + element.getText());
+            System.out.println("Task Name: " + wait.until(ExpectedConditions.elementToBeClickable(element)).getText());
         }
 
     }
