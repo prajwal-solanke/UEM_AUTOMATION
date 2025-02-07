@@ -149,7 +149,7 @@ public class DeviceManagerWindowsTest extends Base {
 	@Test(priority = 9) // UX-UEM-WD-003
 	public void TC_DM_009_UserIsAbleToViewUpdatedDataOnTheGroup() {
 		deviceManagerPage.selectTheGroup("UEM_AUTOMATION");
-		deviceManagerPage.selectTheInfoTab("Group Information");
+		deviceManagerPage.selectTheInfoTabForGroup("Group Information");
 //		deviceManagerPage.getDataOnGroupInformation("Group Name");
 		deviceManagerPage.verifyDataOnGroupInformation("Group Name", "UEM_AUTOMATION");
 		deviceManagerPage.verifyDataOnGroupInformation("Group Hierarchy", "UEM_AUTOMATION");
@@ -168,7 +168,7 @@ public class DeviceManagerWindowsTest extends Base {
 	public void TC_DM_010_UserIsAbleToViewFullScreenForEveryModule() {
 		deviceManagerPage
 				.selectTheGroup("UEM_AUTOMATION")
-				.selectTheInfoTab("Group Information")
+				.selectTheInfoTabForGroup("Group Information")
 				.viewFullScreen();
 	}
 
@@ -176,7 +176,7 @@ public class DeviceManagerWindowsTest extends Base {
 	public void TC_DM_011_Users_are_able_to_search_os_specific_tasks() {
 		deviceManagerPage
 				.selectTheGroup("UEM_AUTOMATION")
-				.selectTheInfoTab("Task Manager")
+				.selectTheInfoTabForGroup("Task Manager")
 				.selectTaskManagerOs("Windows")
 				.displayRecentTask();
 	}
@@ -186,7 +186,7 @@ public class DeviceManagerWindowsTest extends Base {
 		Assert.fail("Note: Search in column is not availbale, column filter toogle enable/disable is removed");
 //		deviceManagerPage
 //				.selectTheGroup("UEM_AUTOMATION")
-//				.selectTheInfoTab("Task Manager")
+//				.selectTheInfoTabForGroup("Task Manager")
 //				.selectTaskManagerOs("Windows")
 //				.displayRecentTask()
 //				.columnFilterToogle("Enable") // column filter toogle is removed in 3.10 WebIAS
@@ -197,7 +197,7 @@ public class DeviceManagerWindowsTest extends Base {
 	public void TC_DM_013_Users_are_able_to_use_taskManager_tooltip_columnVisibility_copy_exportToCsv_exportToExcel_pdf_print_cancel_pause_resume() throws InterruptedException {
 		deviceManagerPage
 				.selectTheGroup("UEM_AUTOMATION")
-				.selectTheInfoTab("Task Manager")
+				.selectTheInfoTabForGroup("Task Manager")
 				.selectTaskManagerOs("Windows")
 				.selectColumnVisiblity("Function Name")
 				.copySettingsToTheClipboard()
@@ -211,7 +211,7 @@ public class DeviceManagerWindowsTest extends Base {
 	public void TC_DM_014_Users_are_able_to_view_applied_task_on_the_group() {
 		deviceManagerPage
 				.selectTheGroup("UEM_AUTOMATION")
-				.selectTheInfoTab("Task Activity")
+				.selectTheInfoTabForGroup("Task Activity")
 				.selectTheRecord_OsName_functionName_AndPrintAllTasks("1 Week", "All", "All");
 	}
 
@@ -219,7 +219,7 @@ public class DeviceManagerWindowsTest extends Base {
 	public void TC_DM_015_Users_are_able_to_use_filter_selectRecords_osName_functionName() {
 		deviceManagerPage
 				.selectTheGroup("UEM_AUTOMATION")
-				.selectTheInfoTab("Task Activity")
+				.selectTheInfoTabForGroup("Task Activity")
 				.selectTheRecord_OsName_functionName_AndPrintAllTasks("1 Month", "Windows", "Mouse Settings");
 	}
 
@@ -227,7 +227,7 @@ public class DeviceManagerWindowsTest extends Base {
 	public void TC_DM_016_Users_are_able_to_use_taskActivity_tooltip_columnVisibility_copy_exportToCsv_exportToExcel_pdf_print_cancel_pause_resume() throws InterruptedException {
 		deviceManagerPage
 				.selectTheGroup("UEM_AUTOMATION")
-				.selectTheInfoTab("Task Activity")
+				.selectTheInfoTabForGroup("Task Activity")
 				.selectColumnVisiblity("Host Name")
 				.copySettingsToTheClipboard()
 				.exportToCsv()
@@ -236,7 +236,7 @@ public class DeviceManagerWindowsTest extends Base {
 //				.print(); // it's not implemented yet
 				.applyMouseSettings()
 				.selectTheGroup("UEM_AUTOMATION")
-				.selectTheInfoTab("Task Activity")
+				.selectTheInfoTabForGroup("Task Activity")
 				.searchTaskDetailsInSearchBoxAndCheckIt("Mouse Settings")
 				.applyPause()
 				.searchTaskDetailsInSearchBoxAndCheckIt("Mouse Settings")
@@ -251,7 +251,7 @@ public class DeviceManagerWindowsTest extends Base {
 				.selectTheGroup("UEM_AUTOMATION")
 				.applyMouseSettings()
 				.selectTheGroup("UEM_AUTOMATION")
-				.selectTheInfoTab("Task Activity")
+				.selectTheInfoTabForGroup("Task Activity")
 				.searchTaskDetailsInSearchBoxAndCheckIt("Mouse Settings")
 				.applyCancel();
 	}
@@ -262,7 +262,7 @@ public class DeviceManagerWindowsTest extends Base {
 				.selectTheGroup("UEM_AUTOMATION")
 				.applyMouseSettings()
 				.selectTheGroup("UEM_AUTOMATION")
-				.selectTheInfoTab("Task Activity")
+				.selectTheInfoTabForGroup("Task Activity")
 				.searchTaskDetailsInSearchBoxAndCheckIt("Mouse Settings")
 				.applyPause();
 	}
@@ -273,7 +273,7 @@ public class DeviceManagerWindowsTest extends Base {
 				.selectTheGroup("UEM_AUTOMATION")
 				.applyMouseSettings()
 				.selectTheGroup("UEM_AUTOMATION")
-				.selectTheInfoTab("Task Activity")
+				.selectTheInfoTabForGroup("Task Activity")
 				.searchTaskDetailsInSearchBoxAndCheckIt("Mouse Settings")
 				.applyPause()
 				.searchTaskDetailsInSearchBoxAndCheckIt("Mouse Settings")
@@ -291,6 +291,7 @@ public class DeviceManagerWindowsTest extends Base {
 	public void TC_DM_021_Users_are_able_to_add_specific_task_on_the_groupProfile() throws InterruptedException {
 		deviceManagerPage
 				.selectTheGroup("UEM_AUTOMATION")
+				.selectTheInfoTabForGroup("Group Information")
 				.removeAllPoliciesIn("Policy Count")
 				.applyMouseSettings1("Y", "N", "100", "30")
 				.selectTheGroup("UEM_AUTOMATION")
@@ -305,6 +306,13 @@ public class DeviceManagerWindowsTest extends Base {
 				.applyMouseSettings1("N", "Y", "100", "30");
 	}
 
-
+	@Test(priority = 23) // UX_UEM_WD_021
+	public void TC_DM_023_usersAreAbleToViewDetailsAboutDeviceRegistered() {
+		deviceManagerPage
+				.selectTheGroup("UEM_AUTOMATION")
+				.clickOnTheDevice("192.168.3.156")
+				.selectTheInfoTabForDevice("System Information")
+				.verifyDataOnSysInfoOsInformation("OS Name", "Windows 10 Enterprise LTSC,64-bit");
+	}
 
 }

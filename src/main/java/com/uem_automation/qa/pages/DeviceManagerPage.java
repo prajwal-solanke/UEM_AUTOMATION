@@ -470,10 +470,12 @@ public class DeviceManagerPage {
         return linuxOsProfileInformationElement.getText(); // SYSTEM SETTINGS
     }
 
-    public void selectTheDevice(String deviceIpProperty) {
+    public DeviceManagerPage selectTheDevice(String deviceIpProperty) {
+        expandTheGroupSelected();
         WebElement deviceIpChkboxElement = driver.findElement(
                 By.xpath("//td[normalize-space()='" + deviceIpProperty + "']/parent::tr/td/div[@class='checkbox']"));
         deviceIpChkboxElement.click();
+        return this;
     }
 
     public void expandTheGroupSelected() {
@@ -488,10 +490,12 @@ public class DeviceManagerPage {
         }
     }
 
-    public void clickOnTheDevice(String deviceIpProperty) {
+    public DeviceManagerPage clickOnTheDevice(String deviceIpProperty) {
+        expandTheGroupSelected();
         WebElement deviceIpElement = driver
                 .findElement(By.xpath("//span[normalize-space()='" + deviceIpProperty + "']"));
         deviceIpElement.click();
+        return this;
     }
 
     public void clickOnSystemInformationTab() {
@@ -635,7 +639,7 @@ public class DeviceManagerPage {
 //        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
 //    }
 
-    public DeviceManagerPage selectTheInfoTab(String tab) {
+    public DeviceManagerPage selectTheInfoTabForGroup(String tab) {
         wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
         driver.findElement(By.xpath("//label[contains(@id, 'MainMenulbl')][normalize-space()='" + tab + "']")).click();
         wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
@@ -753,7 +757,7 @@ public class DeviceManagerPage {
 
         List<WebElement> elements = driver.findElements(By.xpath("//table[@id='tblTaskDetailReport']//td[6]")); // task names column
         for(WebElement element: elements) {
-            System.out.println("Task Name: " + wait.until(ExpectedConditions.elementToBeClickable(element)).getText());
+            System.out.println("Task Name: " + element.getText());
         }
 
     }
@@ -1011,6 +1015,25 @@ public class DeviceManagerPage {
             buttonApplyRemoveAllPolicies.click();
             buttonCloseRemoveAllPolicies.click();
         }
+        return this;
+    }
+
+    public DeviceManagerPage verifyDataOnSysInfoOsInformation(String label, String value) {
+
+        String actual = driver.findElement(
+                By.xpath(
+                        "//span[contains(text(),'" + label + "')]/parent::div/following::span[@id='ContentPlaceHolder1_lblOSNameSysDetailsCE']"
+                )
+        ).getText();
+
+        Assert.assertEquals(actual,value, "OS Name is not matching with expected os name");
+        return this;
+    }
+
+    public DeviceManagerPage selectTheInfoTabForDevice(String tab) {
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
+        driver.findElement(By.xpath("(//label[contains(@id, 'ContentPlaceHolder1_lbl')][normalize-space()='" + tab + "'])[1]")).click();
+        wait.until(ExpectedConditions.invisibilityOf(ajaxLoaderOuter));
         return this;
     }
 }
